@@ -2,6 +2,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan'
+import authRouter from './routes/auth.routes';
+import userRouter from './routes/user.routes';
+
+
 
 const app = express();
 dotenv.config();
@@ -20,6 +24,9 @@ app.get('/', (_req, res) => {
     res.send('Hello from Backend.');
 })
 
+//  routes
+app.use('/v1/api/auth', authRouter);
+app.use('/v1/api/users', userRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`)
