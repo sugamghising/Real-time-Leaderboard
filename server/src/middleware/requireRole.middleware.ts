@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 
 
-export const requireAuth = (role: 'ADMIN' | 'USER') => {
+export const requireRole = (role: 'ADMIN' | 'USER') => {
     return (req: Request, res: Response, next: NextFunction) => {
         if (!req.user) {
             return res.status(401).json({ error: 'Unauthorized' });

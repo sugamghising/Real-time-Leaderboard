@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as userService from '../services/user.service';
+import { updateUserSchema } from '../schemas/user.schema';
 
 
 export const getUserById = async (req: Request, res: Response) => {
@@ -36,7 +37,18 @@ export const updateUser = async (req: Request, res: Response) => {
         if (!id) {
             return res.status(400).json({ error: "User ID is required" });
         }
-        const updatedUser = await userService.updateUser(id, req.body);
+
+        // Only allow users to update their own profile unless they're admin
+        if (req.user?.userId !== id && req.user?.role !== 'ADMIN') {
+            return res.status(403).json({ error: "Forbidden: You can only update your own profile" });
+        }
+
+        const parsed = updateUserSchema.safeParse(req.body);
+        if (!parsed.success) {
+            return res.status(400).json({ error: parsed.error });
+        }
+
+        const updatedUser = await userService.updateUser(id, parsed.data);
         res.status(200).json({
             message: "User updated successfully",
             user: updatedUser
@@ -55,6 +67,12 @@ export const deleteUser = async (req: Request, res: Response) => {
         if (!id) {
             return res.status(400).json({ error: "User ID is required" });
         }
+
+        // Only allow users to delete their own profile unless they're admin
+        if (req.user?.userId !== id && req.user?.role !== 'ADMIN') {
+            return res.status(403).json({ error: "Forbidden: You can only delete your own profile" });
+        }
+
         await userService.deleteUser(id);
         res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {

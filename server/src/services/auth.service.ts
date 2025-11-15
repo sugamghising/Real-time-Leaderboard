@@ -1,4 +1,3 @@
-import { error } from "console";
 import prisma from "../config/db";
 import { redis } from "../config/redis";
 import { comparePassword, hashPassword } from "../utils/hash";

@@ -39,6 +39,7 @@ model Game {
   slug        String   @unique
   title       String
   description String?
+  imageUrl    String?
   metadata    Json?
   createdById String
   createdAt   DateTime @default(now())

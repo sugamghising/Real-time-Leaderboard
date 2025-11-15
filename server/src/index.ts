@@ -1,9 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import morgan from 'morgan'
+import morgan from 'morgan';
 import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
+import gameRouter from './routes/game.routes';
 
 
 
@@ -27,6 +28,7 @@ app.get('/', (_req, res) => {
 //  routes
 app.use('/v1/api/auth', authRouter);
 app.use('/v1/api/users', userRouter);
+app.use('/v1/api/games', gameRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`)
