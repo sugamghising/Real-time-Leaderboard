@@ -43,12 +43,14 @@ export const getUserById = async (userId: string) => {
 };
 
 export const updateUser = (userId: string, data: UpdateUserData) => {
+    const updateData: any = {};
+    
+    if (data.displayName !== undefined) updateData.displayName = data.displayName;
+    if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
+
     return prisma.user.update({ 
         where: { id: userId }, 
-        data: {
-            displayName: data.displayName,
-            avatarUrl: data.avatarUrl
-        },
+        data: updateData,
         select: {
             id: true,
             username: true,

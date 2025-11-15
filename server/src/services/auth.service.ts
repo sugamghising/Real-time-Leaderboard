@@ -32,8 +32,8 @@ export const loginUser = async (email: string, password: string) => {
         throw new Error('Invalid credentials.');
     }
 
-    const accessToken = await generateToken({ userId: user.id, role: user.role })
-    const refreshToken = await generateRefreshToken(user.id)
+    const accessToken = generateToken({ userId: user.id, role: user.role });
+    const refreshToken = generateRefreshToken(user.id);
 
     // Store refresh token in database with expiration
     const expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
@@ -88,8 +88,8 @@ export const refreshAccessToken = async (oldRefreshToken: string) => {
     }
 
     // Generate new tokens (rotation)
-    const newAccessToken = await generateToken({ userId: tokenRecord.user.id, role: tokenRecord.user.role });
-    const newRefreshToken = await generateRefreshToken(tokenRecord.user.id);
+    const newAccessToken = generateToken({ userId: tokenRecord.user.id, role: tokenRecord.user.role });
+    const newRefreshToken = generateRefreshToken(tokenRecord.user.id);
 
     // Atomically revoke old token and create new one
     const expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
