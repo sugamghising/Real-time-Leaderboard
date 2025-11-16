@@ -9,6 +9,7 @@ import scoreRouter from './routes/score.routes';
 import leaderboardRouter from './routes/leaderboard.routes';
 import http from "http";
 import { initSocket } from './config/socket';
+import messageRouter from './routes/message.route';
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/v1/api/users', userRouter);
 app.use('/v1/api/games', gameRouter);
 app.use('/v1/api/scores', scoreRouter);
 app.use('/v1/api/leaderboard', leaderboardRouter);
+app.use('/v1/api/messages', messageRouter);
 
 server.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`);

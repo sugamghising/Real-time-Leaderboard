@@ -90,6 +90,10 @@ model Message {
 
   fromUser User @relation("MessagesSent", fields: [fromUserId], references: [id])
   toUser   User @relation("MessagesRecv", fields: [toUserId], references: [id])
+
+  @@index([toUserId, isRead])
+  @@index([fromUserId, createdAt])
+  @@index([toUserId, createdAt])
 }
 
 model RefreshToken {

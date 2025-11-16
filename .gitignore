@@ -1,0 +1,135 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Build Output
+dist/
+build/
+*.js.map
+*.d.ts.map
+
+# TypeScript
+*.tsbuildinfo
+.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime Data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage & Testing
+coverage/
+.nyc_output/
+*.lcov
+.coverage/
+.jest-cache/
+
+# IDEs and Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Prisma
+*.db
+*.db-journal
+
+# Redis
+dump.rdb
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
+
+# OS Files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Cloudinary Uploads (if storing locally)
+uploads/
+
+# Documentation Build
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# PM2
+.pm2/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Serverless
+.serverless/
+
+# FuseBox
+.fusebox/
+
+# DynamoDB Local
+.dynamodb/
+
+# TernJS
+.tern-port
+
+# Stores VSCode versions used for testing
+.vscode-test
+
+# Lock files (optional - uncomment if not committing)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
