@@ -28,13 +28,15 @@ export const sendMessage = async (req: Request, res: Response) => {
             createdAt: created.createdAt,
         };
         //emit to receiver
-        io.to(`user:${toUserId}`).emit("message:new", messagePayload);
-        //emit to sender
-        io.to(`user:${fromUserId}`).emit("message:sent", messagePayload);
+        if (io) {
+            io.to(`user:${toUserId}`).emit("message:new", messagePayload);
+            //emit to sender
+            io.to(`user:${fromUserId}`).emit("message:sent", messagePayload);
 
-        //increament the unread count
-        const unreadCount = await messageService.getUnreadCount(toUserId);
-        io.to(`user:${toUserId}`).emit("message:unread_count", { count: unreadCount });
+            //increament the unread count
+            const unreadCount = await messageService.getUnreadCount(toUserId);
+            io.to(`user:${toUserId}`).emit("message:unread_count", { count: unreadCount });
+        }
 
         res.status(201).json({ success: true, message: messagePayload });
     } catch (error) {
@@ -73,7 +75,9 @@ export const markMessagesAsRead = async (req: Request, res: Response) => {
         // emit updated unread count to user
         const unreadCount = await messageService.getUnreadCount(userId);
         const io = req.app.get("io");
-        io.to(`user:${userId}`).emit("message:unread_count", { count: unreadCount });
+        if (io) {
+            io.to(`user:${userId}`).emit("message:unread_count", { count: unreadCount });
+        }
         res.json({ success: true, updated, unreadCount });
     } catch (error) {
         console.error("Error in marking messages as Read", error);

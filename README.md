@@ -1,20 +1,24 @@
-# 🎮 Real-Time Leaderboard Backend
+# 🎮 Real-Time Leaderboard
 
-A high-performance, real-time leaderboard system built with Node.js, Express, PostgreSQL, Redis, and Socket.IO. Features include user authentication, game management, score tracking, live leaderboards, and direct messaging.
+A complete full-stack real-time leaderboard system built with modern web technologies. Features user authentication, game management, score tracking, live leaderboards, direct messaging, and social features.
 
 ## 🚀 Features
 
 ### Core Functionality
 
-- ✅ **JWT Authentication** - Access & refresh token rotation
+- ✅ **JWT Authentication** - Secure access & refresh token rotation
 - ✅ **Role-Based Access Control** - User/Admin permissions
 - ✅ **Game Management** - CRUD operations with image uploads
-- ✅ **Score Submission** - Real-time score tracking
+- ✅ **Score Submission** - Real-time score tracking with metadata
 - ✅ **Live Leaderboards** - Global, per-game, and daily rankings
 - ✅ **Direct Messaging** - Real-time chat with unread tracking
+- ✅ **Social Features** - Friend requests, user connections
 - ✅ **WebSocket Support** - Live updates via Socket.IO
+- ✅ **Responsive UI** - Modern React interface with Tailwind CSS
 
 ### Tech Stack
+
+#### Backend
 
 - **Runtime:** Node.js with TypeScript
 - **Framework:** Express 5.1
@@ -25,6 +29,18 @@ A high-performance, real-time leaderboard system built with Node.js, Express, Po
 - **Auth:** JWT (jsonwebtoken)
 - **File Upload:** Multer + Cloudinary
 - **Security:** bcrypt password hashing
+
+#### Frontend
+
+- **Framework:** React 18 with TypeScript
+- **Build Tool:** Vite
+- **State Management:** Zustand
+- **Data Fetching:** TanStack Query (React Query)
+- **Styling:** Tailwind CSS
+- **Forms:** React Hook Form + Zod
+- **Real-time:** Socket.IO Client
+- **Icons:** Lucide React
+- **Animations:** Framer Motion
 
 ---
 
@@ -42,13 +58,21 @@ A high-performance, real-time leaderboard system built with Node.js, Express, Po
 ### 1. Clone & Install Dependencies
 
 ```bash
+# Install backend dependencies
 cd server
 npm install
+
+# Install frontend dependencies
+cd ../client
+npm install
+
+# Return to root
+cd ..
 ```
 
 ### 2. Environment Setup
 
-Create a `.env` file in the server root:
+Create a `.env` file in the `server/` directory:
 
 ```env
 # Server
@@ -74,6 +98,8 @@ CLOUDINARY_API_SECRET="your-api-secret"
 ### 3. Database Setup
 
 ```bash
+cd server
+
 # Generate Prisma Client
 npx prisma generate
 
@@ -84,13 +110,23 @@ npx prisma migrate dev
 npx prisma studio
 ```
 
-### 4. Start Development Server
+### 4. Start Development Servers
 
 ```bash
+# Terminal 1: Start Backend Server
+cd server
 npm run dev
+# Server will start on http://localhost:5000
+
+# Terminal 2: Start Frontend Client
+cd client
+npm run dev
+# Client will start on http://localhost:5173 (or next available port)
 ```
 
-Server will start on `http://localhost:5000`
+### 5. Access the Application
+
+Open your browser and navigate to `http://localhost:5173` to access the full application.
 
 ---
 
@@ -311,6 +347,60 @@ Content-Type: application/json
 
 ---
 
+## 🎨 Frontend Features
+
+### User Interface
+
+- **Responsive Design** - Mobile-first approach with Tailwind CSS
+- **Modern UI Components** - Clean, accessible interface
+- **Real-time Updates** - Live leaderboard and message updates
+- **Form Validation** - Client-side validation with error handling
+- **Loading States** - Smooth loading indicators and skeletons
+
+### Pages & Features
+
+#### Authentication
+
+- User registration and login
+- Form validation and error handling
+- Secure token management
+
+#### Dashboard
+
+- User statistics and overview
+- Quick action cards
+- Top players preview
+
+#### Games
+
+- Browse available games
+- Game details with leaderboard preview
+- Score submission with metadata support
+
+#### Leaderboards
+
+- Global leaderboard rankings
+- Game-specific leaderboards
+- Real-time rank updates
+- Daily leaderboard support
+
+#### Social Features
+
+- Friend requests (send, accept, reject)
+- Friends list management
+- Real-time messaging system
+- Unread message counters
+
+#### Admin Panel
+
+- Game management (CRUD operations)
+- User statistics overview
+- Admin-only features
+
+---
+
+## 🔌 WebSocket Events
+
 ## 🗄️ Database Schema
 
 ### Key Models
@@ -348,39 +438,79 @@ Optimized queries with composite indexes on:
 ## 🏗️ Project Structure
 
 ```
-server/
-├── prisma/
-│   ├── schema.prisma          # Database schema
-│   └── migrations/            # Migration history
-├── src/
-│   ├── config/
-│   │   ├── db.ts             # Prisma client
-│   │   ├── redis.ts          # Redis client
-│   │   ├── cloudinary.ts     # Cloudinary config
-│   │   └── socket.ts         # Socket.IO setup
-│   ├── controllers/          # Request handlers
-│   ├── middleware/           # Auth & role middleware
-│   ├── routes/              # API route definitions
-│   ├── schemas/             # Zod validation schemas
-│   ├── services/            # Business logic
-│   ├── types/               # TypeScript types
-│   ├── utils/               # Helper functions
-│   └── index.ts             # App entry point
-├── .env                     # Environment variables
-├── package.json
-├── tsconfig.json
-└── README.md
+.
+├── client/                    # React Frontend
+│   ├── public/               # Static assets
+│   ├── src/
+│   │   ├── api/             # API endpoints & axios config
+│   │   ├── components/      # Reusable UI components
+│   │   │   ├── common/     # Basic components (Button, Input, etc.)
+│   │   │   ├── features/   # Feature-specific components
+│   │   │   └── layout/     # Layout components
+│   │   ├── contexts/       # React contexts (legacy)
+│   │   ├── hooks/          # Custom React hooks
+│   │   ├── lib/            # Utilities (queryClient, utils)
+│   │   ├── pages/          # Page components
+│   │   │   ├── auth/       # Authentication pages
+│   │   │   ├── dashboard/  # Dashboard pages
+│   │   │   ├── games/      # Game-related pages
+│   │   │   ├── leaderboard/ # Leaderboard pages
+│   │   │   ├── chat/       # Chat pages
+│   │   │   ├── friends/    # Friends pages
+│   │   │   ├── profile/    # Profile pages
+│   │   │   └── admin/      # Admin pages
+│   │   ├── providers/      # Context providers
+│   │   ├── stores/         # Zustand stores
+│   │   ├── styles/         # Global styles
+│   │   ├── types/          # TypeScript type definitions
+│   │   └── utils/          # Helper functions
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── README.md
+├── server/                    # Node.js Backend
+│   ├── prisma/
+│   │   ├── schema.prisma    # Database schema
+│   │   └── migrations/      # Migration history
+│   ├── src/
+│   │   ├── config/         # Configuration files
+│   │   │   ├── db.ts       # Prisma client
+│   │   │   ├── redis.ts    # Redis client
+│   │   │   ├── cloudinary.ts # Cloudinary config
+│   │   │   └── socket.ts   # Socket.IO setup
+│   │   ├── controllers/    # Request handlers
+│   │   ├── middleware/     # Auth & role middleware
+│   │   ├── routes/        # API route definitions
+│   │   ├── schemas/       # Zod validation schemas
+│   │   ├── services/      # Business logic
+│   │   ├── types/         # TypeScript types
+│   │   ├── utils/         # Helper functions
+│   │   └── index.ts       # App entry point
+│   ├── .env               # Environment variables
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── README.md
+└── README.md               # This file
 ```
 
 ---
 
 ## 🚀 Deployment
 
-### Production Build
+### Backend Production Build
 
 ```bash
+cd server
 npm run build
 npm start
+```
+
+### Frontend Production Build
+
+```bash
+cd client
+npm run build
+# Dist files will be in client/dist/
 ```
 
 ### Environment Variables (Production)
@@ -396,7 +526,8 @@ npm start
 
 - **Database:** Railway, Neon, Supabase
 - **Redis:** Redis Cloud, Upstash
-- **Hosting:** Railway, Render, Fly.io
+- **Backend Hosting:** Railway, Render, Fly.io
+- **Frontend Hosting:** Vercel, Netlify, Railway
 - **CDN:** Cloudinary (images)
 
 ---
@@ -413,13 +544,27 @@ npm start
 
 ## 🧪 Testing
 
-### Manual Testing with cURL/Postman
+### Manual Testing
 
-1. Register user → Login → Get tokens
-2. Create admin user in DB: `UPDATE "User" SET role = 'ADMIN' WHERE email = '...'`
-3. Create games with admin token
-4. Submit scores and verify leaderboard updates
-5. Test real-time updates with Socket.IO client
+1. **Backend Setup:**
+
+   - Register user → Login → Get tokens
+   - Create admin user in DB: `UPDATE "User" SET role = 'ADMIN' WHERE email = '...'`
+   - Create games with admin token
+   - Submit scores and verify leaderboard updates
+
+2. **Frontend Testing:**
+
+   - Register/login through the UI
+   - Browse games and submit scores
+   - Check real-time leaderboard updates
+   - Test friend requests and messaging
+   - Verify responsive design on mobile/desktop
+
+3. **Real-time Features:**
+   - Test Socket.IO connections
+   - Open multiple browser tabs to verify live updates
+   - Test message delivery and friend request notifications
 
 ### Example Admin Promotion
 
@@ -471,12 +616,24 @@ lsof -ti:5000 | xargs kill -9
 
 ## 📝 Scripts
 
+### Backend Scripts (server/)
+
 ```json
 {
   "start": "node dist/index.js",
   "build": "tsc",
   "dev": "nodemon --watch src --ext ts --exec \"npm run build && npm run start\"",
   "postinstall": "prisma generate"
+}
+```
+
+### Frontend Scripts (client/)
+
+```json
+{
+  "dev": "vite",
+  "build": "tsc -b && vite build",
+  "preview": "vite preview"
 }
 ```
 
@@ -500,17 +657,29 @@ ISC
 
 ## 👨‍💻 Author
 
-Built with ❤️ for real-time gaming experiences
+Built with ❤️ for real-time gaming experiences - Full-stack application with modern React frontend and robust Node.js backend.
 
 ---
 
 ## 🔗 Resources
+
+### Backend
 
 - [Prisma Docs](https://www.prisma.io/docs)
 - [Socket.IO Docs](https://socket.io/docs/v4/)
 - [Redis Commands](https://redis.io/commands/)
 - [Express Guide](https://expressjs.com/en/guide/routing.html)
 - [Zod Documentation](https://zod.dev/)
+
+### Frontend
+
+- [React Docs](https://react.dev/)
+- [Vite Guide](https://vitejs.dev/guide/)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Zustand Docs](https://zustand-demo.pmnd.rs/)
+- [TanStack Query](https://tanstack.com/query/latest)
+- [React Hook Form](https://react-hook-form.com/)
+- [Roadmap.sh](https://roadmap.sh/projects/realtime-leaderboard-system)
 
 ---
 
