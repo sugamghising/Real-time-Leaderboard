@@ -11,7 +11,8 @@ import type {
  * Send a friend request
  */
 export const sendFriendRequest = async (recipientId: string): Promise<ApiResponse<Friendship>> => {
-    const response = await api.post<ApiResponse<Friendship>>('/v1/api/friends/request', { recipientId });
+    // server expects `receiverId` in the request body (see friend.schema.ts)
+    const response = await api.post<ApiResponse<Friendship>>('/v1/api/friends/request', { receiverId: recipientId });
     return response.data;
 };
 
@@ -19,7 +20,7 @@ export const sendFriendRequest = async (recipientId: string): Promise<ApiRespons
  * Accept a friend request
  */
 export const acceptFriendRequest = async (friendshipId: string): Promise<ApiResponse<Friendship>> => {
-    const response = await api.post<ApiResponse<Friendship>>(`/v1/api/friends/${friendshipId}/accept`);
+    const response = await api.post<ApiResponse<Friendship>>(`/v1/api/friends/accept/${friendshipId}`);
     return response.data;
 };
 
@@ -27,7 +28,7 @@ export const acceptFriendRequest = async (friendshipId: string): Promise<ApiResp
  * Reject a friend request
  */
 export const rejectFriendRequest = async (friendshipId: string): Promise<ApiResponse<void>> => {
-    const response = await api.post<ApiResponse<void>>(`/v1/api/friends/${friendshipId}/reject`);
+    const response = await api.post<ApiResponse<void>>(`/v1/api/friends/reject/${friendshipId}`);
     return response.data;
 };
 
@@ -44,8 +45,12 @@ export const removeFriend = async (friendshipId: string): Promise<ApiResponse<vo
  */
 export const getFriends = async (userId?: string): Promise<ApiResponse<FriendshipWithUsers[]>> => {
     const endpoint = userId ? `/v1/api/users/${userId}/friends` : '/v1/api/friends';
-    const response = await api.get<ApiResponse<FriendshipWithUsers[]>>(endpoint);
-    return response.data;
+    const response = await api.get(endpoint);
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<FriendshipWithUsers[]>;
+    }
+    return respData as ApiResponse<FriendshipWithUsers[]>;
 };
 
 /**
@@ -55,11 +60,19 @@ export const getPendingRequests = async (): Promise<ApiResponse<{
     received: FriendRequest[];
     sent: FriendRequest[];
 }>> => {
-    const response = await api.get<ApiResponse<{
+    const response = await api.get('/v1/api/friends/requests');
+    const respData = response.data;
+    // Server may return a raw object { received, sent } instead of the ApiResponse wrapper
+    if (respData && typeof respData.received !== 'undefined') {
+        return { data: respData } as ApiResponse<{
+            received: FriendRequest[];
+            sent: FriendRequest[];
+        }>;
+    }
+    return respData as ApiResponse<{
         received: FriendRequest[];
         sent: FriendRequest[];
-    }>>('/v1/api/friends/requests');
-    return response.data;
+    }>;
 };
 
 /**
@@ -94,14 +107,24 @@ export const searchUsers = async (query: string): Promise<ApiResponse<{
     profilePicture?: string;
     friendshipStatus: FriendStatus;
 }[]>> => {
-    const response = await api.get<ApiResponse<{
+    const response = await api.get('/v1/api/users/search', { params: { q: query } });
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<{
+            id: string;
+            username: string;
+            email: string;
+            profilePicture?: string;
+            friendshipStatus: FriendStatus;
+        }[]>;
+    }
+    return respData as ApiResponse<{
         id: string;
         username: string;
         email: string;
         profilePicture?: string;
         friendshipStatus: FriendStatus;
-    }[]>>('/v1/api/users/search', { params: { q: query } });
-    return response.data;
+    }[]>;
 };
 
 /**

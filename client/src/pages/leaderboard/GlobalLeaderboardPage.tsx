@@ -1,27 +1,53 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { Trophy } from "lucide-react";
 import { getGlobalLeaderboard } from "../../api/endpoints/leaderboard";
 import { queryClient } from "../../lib/queryClient";
+import { SocketContext } from "../../contexts/SocketContext";
+import type { ApiResponse, LeaderboardEntry } from "../../types";
 
 export const GlobalLeaderboardPage = () => {
-  const { data, isLoading } = useQuery({
+  const { socket } = useContext(SocketContext);
+
+  const { data, isLoading, error } = useQuery<ApiResponse<LeaderboardEntry[]>>({
     queryKey: ["leaderboard", "global"],
-    queryFn: () => getGlobalLeaderboard({ limit: 50 }),
+    queryFn: () => getGlobalLeaderboard({ limit: 50, t: Date.now() }),
+    staleTime: 0, // Force refetch on every query
+    gcTime: 0, // Disable React Query cache
   });
 
   // Listen for real-time updates
   useEffect(() => {
+    if (!socket) return;
+
     const handleLeaderboardUpdate = () => {
       queryClient.invalidateQueries({ queryKey: ["leaderboard", "global"] });
     };
 
-    window.addEventListener("leaderboard:update", handleLeaderboardUpdate);
+    socket.on("leaderboard:update", handleLeaderboardUpdate);
 
     return () => {
-      window.removeEventListener("leaderboard:update", handleLeaderboardUpdate);
+      socket.off("leaderboard:update", handleLeaderboardUpdate);
     };
-  }, []);
+  }, [socket]);
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <Trophy className="w-8 h-8 text-yellow-500" />
+            Global Leaderboard
+          </h1>
+        </div>
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+          <p className="text-red-500">
+            Error loading leaderboard: {error.message}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -37,7 +63,7 @@ export const GlobalLeaderboardPage = () => {
           <p className="text-gray-500 text-center py-12">
             Loading leaderboard...
           </p>
-        ) : !data?.data || data.data.length === 0 ? (
+        ) : !data || !data.data || data.data.length === 0 ? (
           <p className="text-gray-500 text-center py-12">
             No leaderboard data yet
           </p>
@@ -55,13 +81,10 @@ export const GlobalLeaderboardPage = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Score
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Games
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.data.map((entry: any, index: number) => (
+                {data.data.map((entry: LeaderboardEntry, index: number) => (
                   <tr
                     key={entry.userId}
                     className={index < 3 ? "bg-yellow-50" : ""}
@@ -90,11 +113,6 @@ export const GlobalLeaderboardPage = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-semibold text-gray-900">
                         {entry.score}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {entry.gamesPlayed || 0}
                       </div>
                     </td>
                   </tr>

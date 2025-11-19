@@ -12,8 +12,12 @@ export const getLeaderboard = async (params?: {
     limit?: number;
     offset?: number;
 }): Promise<ApiResponse<LeaderboardEntry[]>> => {
-    const response = await api.get<ApiResponse<LeaderboardEntry[]>>('/v1/api/leaderboard', { params });
-    return response.data;
+    const response = await api.get('/v1/api/leaderboard', { params });
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<LeaderboardEntry[]>;
+    }
+    return respData as ApiResponse<LeaderboardEntry[]>;
 };
 
 /**
@@ -22,9 +26,17 @@ export const getLeaderboard = async (params?: {
 export const getGlobalLeaderboard = async (params?: {
     timeFrame?: TimeFrame;
     limit?: number;
+    [key: string]: any; // Allow additional params for cache busting
 }): Promise<ApiResponse<LeaderboardEntry[]>> => {
     const response = await api.get<ApiResponse<LeaderboardEntry[]>>('/v1/api/leaderboard/global', { params });
-    return response.data;
+    // normalize server responses: server may return a raw array (LeaderboardEntry[])
+    // while client expects ApiResponse<T> ({ data: T }). Wrap arrays into the
+    // ApiResponse shape so components can read `resp.data` reliably.
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<LeaderboardEntry[]>;
+    }
+    return respData as ApiResponse<LeaderboardEntry[]>;
 };
 
 /**
@@ -37,11 +49,12 @@ export const getGameLeaderboard = async (
         limit?: number;
     }
 ): Promise<ApiResponse<LeaderboardEntry[]>> => {
-    const response = await api.get<ApiResponse<LeaderboardEntry[]>>(
-        `/v1/api/leaderboard/game/${gameId}`,
-        { params }
-    );
-    return response.data;
+    const response = await api.get(`/v1/api/leaderboard/game/${gameId}`, { params });
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<LeaderboardEntry[]>;
+    }
+    return respData as ApiResponse<LeaderboardEntry[]>;
 };
 
 /**
@@ -90,6 +103,10 @@ export const getFriendsLeaderboard = async (params?: {
     timeFrame?: TimeFrame;
     limit?: number;
 }): Promise<ApiResponse<LeaderboardEntry[]>> => {
-    const response = await api.get<ApiResponse<LeaderboardEntry[]>>('/v1/api/leaderboard/friends', { params });
-    return response.data;
+    const response = await api.get('/v1/api/leaderboard/friends', { params });
+    const respData = response.data;
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<LeaderboardEntry[]>;
+    }
+    return respData as ApiResponse<LeaderboardEntry[]>;
 };

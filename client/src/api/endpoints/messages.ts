@@ -19,8 +19,13 @@ export const sendMessage = async (data: SendMessageData): Promise<ApiResponse<Me
  * Get conversation with a user
  */
 export const getConversation = async (userId: string): Promise<ApiResponse<MessageWithUser[]>> => {
-    const response = await api.get<ApiResponse<MessageWithUser[]>>(`/v1/api/messages/conversation/${userId}`);
-    return response.data;
+    const response = await api.get(`/v1/api/messages/conversation/${userId}`);
+    const respData = response.data;
+    // server returns { messages: MessageWithUser[] } sometimes, normalize to ApiResponse
+    if (respData && Array.isArray(respData.messages)) {
+        return { data: respData.messages } as ApiResponse<MessageWithUser[]>;
+    }
+    return respData as ApiResponse<MessageWithUser[]>;
 };
 
 /**

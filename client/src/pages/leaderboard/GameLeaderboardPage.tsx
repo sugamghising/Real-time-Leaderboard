@@ -19,6 +19,17 @@ export const GameLeaderboardPage = () => {
     enabled: !!gameId,
   });
 
+  // defensive normalization of returned data
+  const entries = Array.isArray((data as any)?.data)
+    ? (data as any).data
+    : Array.isArray(data)
+    ? (data as any)
+    : [];
+
+  // helpful debug log when developing locally
+  // eslint-disable-next-line no-console
+  console.debug("GameLeaderboardPage - entries:", entries);
+
   return (
     <div className="space-y-6">
       <Link
@@ -41,7 +52,7 @@ export const GameLeaderboardPage = () => {
           <p className="text-gray-500 text-center py-12">
             Loading leaderboard...
           </p>
-        ) : !data?.data || data.data.length === 0 ? (
+        ) : entries.length === 0 ? (
           <p className="text-gray-500 text-center py-12">No scores yet</p>
         ) : (
           <div className="overflow-x-auto">
@@ -57,15 +68,12 @@ export const GameLeaderboardPage = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Score
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.data.map((entry: any, index: number) => (
+                {entries.map((entry: any, index: number) => (
                   <tr
-                    key={entry.id}
+                    key={entry.userId}
                     className={index < 3 ? "bg-yellow-50" : ""}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -92,11 +100,6 @@ export const GameLeaderboardPage = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-semibold text-gray-900">
                         {entry.score}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {new Date(entry.createdAt).toLocaleDateString()}
                       </div>
                     </td>
                   </tr>

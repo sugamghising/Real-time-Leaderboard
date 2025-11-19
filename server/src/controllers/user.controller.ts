@@ -3,6 +3,7 @@ import * as userService from '../services/user.service';
 import { updateUserSchema } from '../schemas/user.schema';
 
 
+
 export const getUserById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -80,5 +81,22 @@ export const deleteUser = async (req: Request, res: Response) => {
             message: "Could not delete user",
             error: error instanceof Error ? error.message : "Internal server error"
         });
+    }
+};
+
+export const searchUsers = async (req: Request, res: Response) => {
+    try {
+        const q = (req.query.q as string) || '';
+        if (!q || q.trim().length === 0) {
+            return res.status(400).json({ error: 'Query parameter `q` is required' });
+        }
+
+        const currentUserId = req.user?.userId;
+        const results = await userService.searchUsers(q, currentUserId);
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error('Error in searching users', error);
+        res.status(500).json({ error: (error as Error).message });
     }
 };

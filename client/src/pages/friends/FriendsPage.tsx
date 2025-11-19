@@ -1,12 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Users, UserPlus, UserCheck, UserX } from "lucide-react";
+import { Users, User, UserPlus, UserCheck, UserX, Search } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useFriendStore } from "../../stores/friendStore";
 import {
   getFriends,
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  searchUsers,
+  sendFriendRequest,
 } from "../../api/endpoints/friends";
+import { useToast } from "../../lib/toast";
+import { SUCCESS_MESSAGES } from "../../config/constants";
 
 export const FriendsPage = () => {
   const queryClient = useQueryClient();
@@ -26,6 +31,26 @@ export const FriendsPage = () => {
   const receivedRequests = requestsResponse?.data?.received || [];
   const sentRequests = requestsResponse?.data?.sent || [];
 
+  // Keep friend store in sync with fetched requests so UI shows accurate pending count
+  const { setFriendRequests } = useFriendStore();
+
+  // Whenever requestsResponse updates, sync into store
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    if (requestsResponse?.data) {
+      setFriendRequests(requestsResponse.data.received || []);
+    }
+  }, [requestsResponse?.data, setFriendRequests]);
+
+  // Search users (send friend requests)
+  const [query, setQuery] = useState("");
+  const { data: searchResponse, isLoading: searchLoading } = useQuery({
+    queryKey: ["users", "search", query],
+    queryFn: () => searchUsers(query),
+    enabled: query.trim().length > 0,
+  });
+  const searchResults = searchResponse?.data || [];
+
   const acceptMutation = useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: () => {
@@ -33,6 +58,17 @@ export const FriendsPage = () => {
       queryClient.invalidateQueries({ queryKey: ["friend-requests"] });
     },
   });
+
+  // show toast on accept success/failure
+  const toast = useToast();
+  useEffect(() => {
+    if (acceptMutation.isSuccess) {
+      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_ACCEPTED, "success");
+    }
+    if (acceptMutation.isError) {
+      toast.addToast("Failed to accept friend request", "error");
+    }
+  }, [acceptMutation.isSuccess, acceptMutation.isError, toast]);
 
   const rejectMutation = useMutation({
     mutationFn: rejectFriendRequest,
@@ -42,12 +78,44 @@ export const FriendsPage = () => {
     },
   });
 
+  useEffect(() => {
+    if (rejectMutation.isSuccess) {
+      toast.addToast("Friend request rejected", "info");
+    }
+    if (rejectMutation.isError) {
+      toast.addToast("Failed to reject friend request", "error");
+    }
+  }, [rejectMutation.isSuccess, rejectMutation.isError, toast]);
+
   const handleAccept = (requestId: string) => {
     acceptMutation.mutate(requestId);
   };
 
   const handleReject = (requestId: string) => {
     rejectMutation.mutate(requestId);
+  };
+
+  const sendMutation = useMutation({
+    mutationFn: sendFriendRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friend-requests"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
+      // clear search query so UI updates
+      setQuery("");
+    },
+  });
+
+  useEffect(() => {
+    if (sendMutation.isSuccess) {
+      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_SENT, "success");
+    }
+    if (sendMutation.isError) {
+      toast.addToast("Failed to send friend request", "error");
+    }
+  }, [sendMutation.isSuccess, sendMutation.isError, toast]);
+
+  const handleSendRequest = (userId: string) => {
+    sendMutation.mutate(userId);
   };
 
   return (
@@ -58,7 +126,7 @@ export const FriendsPage = () => {
       </h1>
 
       {/* Friend Requests */}
-      {pendingCount > 0 && (
+      {(receivedRequests.length > 0 || pendingCount > 0) && (
         <div className="bg-white rounded-lg shadow">
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
@@ -83,7 +151,9 @@ export const FriendsPage = () => {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                        {request.requester?.username?.charAt(0).toUpperCase()}
+                        {(
+                          request.requester?.username?.charAt(0) || ""
+                        ).toUpperCase()}
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">
@@ -96,7 +166,7 @@ export const FriendsPage = () => {
                       <button
                         onClick={() => handleAccept(request.id)}
                         disabled={
-                          acceptMutation.isPending || rejectMutation.isPending
+                          acceptMutation.isLoading || rejectMutation.isLoading
                         }
                         className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 disabled:opacity-50"
                       >
@@ -106,7 +176,7 @@ export const FriendsPage = () => {
                       <button
                         onClick={() => handleReject(request.id)}
                         disabled={
-                          acceptMutation.isPending || rejectMutation.isPending
+                          acceptMutation.isLoading || rejectMutation.isLoading
                         }
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2 disabled:opacity-50"
                       >
@@ -137,7 +207,12 @@ export const FriendsPage = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {friendsData.map((friendship) => {
-                const friend = friendship.requester;
+                // server may return friendship with a `friend` object (our service maps it),
+                // or with `requester`/`receiver` fields depending on the endpoint.
+                const friend =
+                  (friendship as any).friend ||
+                  (friendship as any).requester ||
+                  (friendship as any).receiver;
                 return (
                   <div
                     key={friendship.id}
@@ -145,7 +220,8 @@ export const FriendsPage = () => {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-                        {friend?.username?.charAt(0).toUpperCase() || "?"}
+                        {(friend?.username?.charAt(0) || "").toUpperCase() ||
+                          "?"}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 truncate">
@@ -157,6 +233,68 @@ export const FriendsPage = () => {
                   </div>
                 );
               })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Find Players / Send Requests */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+            <Search className="w-5 h-5" />
+            Find Players
+          </h2>
+          <div className="w-1/3">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by username or email"
+              className="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+        </div>
+        <div className="p-6">
+          {searchLoading ? (
+            <p className="text-gray-500">Searching...</p>
+          ) : searchResults.length === 0 && query.trim() !== "" ? (
+            <p className="text-gray-500">No users found</p>
+          ) : (
+            <div className="space-y-3">
+              {searchResults.map((u: any) => (
+                <div
+                  key={u.id}
+                  className="flex items-center justify-between p-3 border rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                      {(u.username?.charAt(0) || "").toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">{u.username}</p>
+                      <p className="text-sm text-gray-500">{u.email}</p>
+                    </div>
+                  </div>
+                  <div>
+                    {u.friendshipStatus === "ACCEPTED" ? (
+                      <span className="text-sm text-gray-500">Friends</span>
+                    ) : u.friendshipStatus === "PENDING" ? (
+                      <span className="text-sm text-gray-500">
+                        Request Sent
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSendRequest(u.id)}
+                        disabled={sendMutation.isLoading}
+                        className="px-3 py-1 bg-blue-600 text-white rounded-lg flex items-center gap-2"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                        Add Friend
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

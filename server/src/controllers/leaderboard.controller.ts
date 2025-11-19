@@ -25,6 +25,11 @@ export const getGameLeaderboard = async (req: Request, res: Response) => {
             ...entry,
             user: userMap.get(entry.userId)
         }));
+        // Debug: log enriched leaderboard user mapping for inspection
+        console.log('Enriched global leaderboard (user ids -> usernames):', enrichedLeaderboard.map(e => ({ userId: e.userId, username: e.user?.username })));
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
 
         res.status(200).json(enrichedLeaderboard);
     } catch (error) {
@@ -51,6 +56,12 @@ export const getGlobalLeaderboard = async (req: Request, res: Response) => {
             ...entry,
             user: userMap.get(entry.userId)
         }));
+        // Debug: log enriched leaderboard user mapping for inspection
+        console.log('Enriched game leaderboard (user ids -> usernames):', enrichedLeaderboard.map(e => ({ userId: e.userId, username: e.user?.username })));
+
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
 
         res.status(200).json(enrichedLeaderboard);
     } catch (error) {
@@ -85,6 +96,9 @@ export const getDailyLeaderboard = async (req: Request, res: Response) => {
             user: userMap.get(entry.userId)
         }));
 
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
         res.status(200).json(enrichedLeaderboard);
     } catch (error) {
         console.error('Error getting daily leaderboard', error);

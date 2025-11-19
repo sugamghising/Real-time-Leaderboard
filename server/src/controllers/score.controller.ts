@@ -27,8 +27,15 @@ export const createScore = async (req: Request, res: Response) => {
         const { updated, rank, score: storedScore } = await leaderboardService.updateScoresIfBetter(gameId, userId, score);
         const io = req.app.get("io");
         if (io && updated) {
-            // you can decide payload shape — keep it minimal
+            // Emit to game room for game-specific updates
             io.to(`game:${gameId}`).emit("leaderboard:update", {
+                gameId,
+                userId,
+                score: storedScore,
+                rank
+            });
+            // Emit globally for global leaderboard updates
+            io.emit("leaderboard:update", {
                 gameId,
                 userId,
                 score: storedScore,

@@ -22,8 +22,13 @@ export const createGame = async (data: CreateGameData): Promise<ApiResponse<Game
  * Get game by ID
  */
 export const getGameById = async (gameId: string): Promise<ApiResponse<GameWithParticipants>> => {
-    const response = await api.get<ApiResponse<GameWithParticipants>>(`/v1/api/games/${gameId}`);
-    return response.data;
+    const response = await api.get(`/v1/api/games/${gameId}`);
+    const respData = response.data;
+    // Server may return the raw game object; normalize into ApiResponse shape
+    if (respData && typeof respData === 'object' && !('data' in respData)) {
+        return { data: respData } as ApiResponse<GameWithParticipants>;
+    }
+    return respData as ApiResponse<GameWithParticipants>;
 };
 
 /**

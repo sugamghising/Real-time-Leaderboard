@@ -95,7 +95,7 @@ export const leaderboardService = {
     async getGlobalLeaderboard(limit = 100) {
         const globalKey = this.globalKey();
         const results = await redis.zRangeWithScores(globalKey, 0, limit - 1, { REV: true });
-
+        console.log(`Global leaderboard results for key ${globalKey}:`, results);
         return results.map((item, index) => ({
             rank: index + 1,
             userId: item.value,

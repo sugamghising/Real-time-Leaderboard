@@ -36,6 +36,21 @@ export default function SocketProvider({ children }: SocketProviderProps) {
     const SOCKET_URL =
       import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
 
+    // Debug: log whether we have a token (truncate for safety)
+    // NOTE: this log is only for local debugging and should be removed in production
+    if (!accessToken) {
+      console.warn(
+        "SocketProvider: no access token available — socket will not authenticate"
+      );
+    } else {
+      // show a short prefix to confirm token presence without printing full secret
+      // eslint-disable-next-line no-console
+      console.debug(
+        "SocketProvider: access token present (prefix)",
+        accessToken.slice(0, 12) + "..."
+      );
+    }
+
     const newSocket = io(SOCKET_URL, {
       auth: {
         token: accessToken,
@@ -47,6 +62,12 @@ export default function SocketProvider({ children }: SocketProviderProps) {
       console.log("✅ Socket connected");
       setSocket(newSocket);
       setConnected(true);
+    });
+
+    newSocket.on("connect_error", (error) => {
+      // Log the full error object to capture server-sent reason
+      console.error("Socket connection error:", error);
+      setConnected(false);
     });
 
     newSocket.on("disconnect", () => {

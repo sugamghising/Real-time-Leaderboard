@@ -15,14 +15,26 @@ export function initSocket(server: HTTPServer) {
     // MIDDLEWARE: JWT AUTH for sockets
     io.use((socket, next) => {
         try {
-            const token = socket.handshake.auth?.token;
+            let token = socket.handshake.auth?.token;
+            // log presence (do not log full token in production)
+            console.log('Socket auth attempt, token present:', !!token);
             if (!token) return next(new Error("NO_TOKEN"));
 
-            const payload = verifyToken(token);
-            socket.data.user = payload;
+            // Accept tokens prefixed with 'Bearer '
+            if (typeof token === 'string' && token.startsWith('Bearer ')) {
+                token = token.slice(7);
+            }
 
-            next();
+            try {
+                const payload = verifyToken(token as string);
+                socket.data.user = payload;
+                next();
+            } catch (err) {
+                console.error('Socket auth verifyToken error:', err instanceof Error ? err.message : err);
+                return next(new Error('INVALID_TOKEN'));
+            }
         } catch (err) {
+            console.error('Socket auth unexpected error:', err);
             next(new Error("INVALID_TOKEN"));
         }
     });

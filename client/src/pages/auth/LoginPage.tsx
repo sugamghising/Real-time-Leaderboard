@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../stores/authStore";
+import { setAccessToken, setRefreshToken } from "../../utils/storage";
 import { login } from "../../api/endpoints/auth";
 import { Input, Button, Card } from "../../components/common";
 import { isValidEmail } from "../../utils/helpers";
@@ -31,6 +32,9 @@ export const LoginPage = () => {
         updatedAt: new Date(),
       };
       setTokens(response.accessToken, response.refreshToken);
+      // Persist tokens to localStorage so axios and socket auth read them
+      setAccessToken(response.accessToken);
+      setRefreshToken(response.refreshToken);
       setUser(userData);
       navigate("/dashboard");
     },

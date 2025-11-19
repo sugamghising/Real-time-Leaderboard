@@ -72,16 +72,16 @@ export const ChatPage = () => {
     });
   };
 
-  const selectedFriend = friends.find(
-    (friendship) =>
-      friendship.requester.id === selectedUserId ||
-      friendship.receiver.id === selectedUserId
-  );
-  const selectedUser = selectedFriend
-    ? selectedFriend.requester.id === selectedUserId
-      ? selectedFriend.requester
-      : selectedFriend.receiver
-    : null;
+  // Helper to get the user object for display from a friendship record.
+  const getFriendUser = (friendship: any) =>
+    friendship.friend || friendship.requester || friendship.receiver || null;
+
+  const selectedFriend = friends.find((friendship: any) => {
+    const friendUser = getFriendUser(friendship);
+    return friendUser?.id === selectedUserId;
+  });
+
+  const selectedUser = selectedFriend ? getFriendUser(selectedFriend) : null;
 
   return (
     <div className="h-[calc(100vh-12rem)] bg-white rounded-lg shadow flex">
@@ -105,8 +105,9 @@ export const ChatPage = () => {
               No friends yet. Add some friends to start chatting!
             </p>
           ) : (
-            friends.map((friendship) => {
-              const friend = friendship.requester; // Assuming current user is receiver
+            friends.map((friendship: any) => {
+              const friend = getFriendUser(friendship);
+              if (!friend) return null;
               return (
                 <button
                   key={friendship.id}
