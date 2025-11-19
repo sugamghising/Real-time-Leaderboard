@@ -166,7 +166,7 @@ export const FriendsPage = () => {
                       <button
                         onClick={() => handleAccept(request.id)}
                         disabled={
-                          acceptMutation.isLoading || rejectMutation.isLoading
+                          acceptMutation.isPending || rejectMutation.isPending
                         }
                         className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 disabled:opacity-50"
                       >
@@ -176,7 +176,7 @@ export const FriendsPage = () => {
                       <button
                         onClick={() => handleReject(request.id)}
                         disabled={
-                          acceptMutation.isLoading || rejectMutation.isLoading
+                          acceptMutation.isPending || rejectMutation.isPending
                         }
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2 disabled:opacity-50"
                       >
@@ -285,7 +285,7 @@ export const FriendsPage = () => {
                     ) : (
                       <button
                         onClick={() => handleSendRequest(u.id)}
-                        disabled={sendMutation.isLoading}
+                        disabled={sendMutation.isPending}
                         className="px-3 py-1 bg-blue-600 text-white rounded-lg flex items-center gap-2"
                       >
                         <UserPlus className="w-4 h-4" />
