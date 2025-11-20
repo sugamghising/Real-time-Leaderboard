@@ -122,7 +122,7 @@ export const ChatPage = () => {
                         {friend.username || "Unknown User"}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
-                        {messages.length > 0
+                        {selectedUserId === friend.id && messages.length > 0
                           ? messages[messages.length - 1]?.content
                           : "No messages"}
                       </p>

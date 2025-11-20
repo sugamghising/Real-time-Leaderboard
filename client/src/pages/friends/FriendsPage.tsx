@@ -51,41 +51,31 @@ export const FriendsPage = () => {
   });
   const searchResults = searchResponse?.data || [];
 
+  const toast = useToast();
+
   const acceptMutation = useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
       queryClient.invalidateQueries({ queryKey: ["friend-requests"] });
+      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_ACCEPTED, "success");
+    },
+    onError: () => {
+      toast.addToast("Failed to accept friend request", "error");
     },
   });
-
-  // show toast on accept success/failure
-  const toast = useToast();
-  useEffect(() => {
-    if (acceptMutation.isSuccess) {
-      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_ACCEPTED, "success");
-    }
-    if (acceptMutation.isError) {
-      toast.addToast("Failed to accept friend request", "error");
-    }
-  }, [acceptMutation.isSuccess, acceptMutation.isError, toast]);
 
   const rejectMutation = useMutation({
     mutationFn: rejectFriendRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
       queryClient.invalidateQueries({ queryKey: ["friend-requests"] });
+      toast.addToast("Friend request rejected", "info");
+    },
+    onError: () => {
+      toast.addToast("Failed to reject friend request", "error");
     },
   });
-
-  useEffect(() => {
-    if (rejectMutation.isSuccess) {
-      toast.addToast("Friend request rejected", "info");
-    }
-    if (rejectMutation.isError) {
-      toast.addToast("Failed to reject friend request", "error");
-    }
-  }, [rejectMutation.isSuccess, rejectMutation.isError, toast]);
 
   const handleAccept = (requestId: string) => {
     acceptMutation.mutate(requestId);
@@ -102,17 +92,12 @@ export const FriendsPage = () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
       // clear search query so UI updates
       setQuery("");
+      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_SENT, "success");
+    },
+    onError: () => {
+      toast.addToast("Failed to send friend request", "error");
     },
   });
-
-  useEffect(() => {
-    if (sendMutation.isSuccess) {
-      toast.addToast(SUCCESS_MESSAGES.FRIEND_REQUEST_SENT, "success");
-    }
-    if (sendMutation.isError) {
-      toast.addToast("Failed to send friend request", "error");
-    }
-  }, [sendMutation.isSuccess, sendMutation.isError, toast]);
 
   const handleSendRequest = (userId: string) => {
     sendMutation.mutate(userId);
