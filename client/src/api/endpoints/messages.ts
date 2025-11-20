@@ -29,6 +29,21 @@ export const getConversation = async (userId: string): Promise<ApiResponse<Messa
 };
 
 /**
+ * Get a single most-recent message for preview purposes
+ */
+export const getConversationPreview = async (userId: string): Promise<ApiResponse<MessageWithUser[]>> => {
+    const response = await api.get(`/v1/api/messages/conversation/${userId}`, { params: { limit: 1 } });
+    const respData = response.data;
+    if (respData && Array.isArray(respData.messages)) {
+        return { data: respData.messages } as ApiResponse<MessageWithUser[]>;
+    }
+    if (Array.isArray(respData)) {
+        return { data: respData } as ApiResponse<MessageWithUser[]>;
+    }
+    return respData as ApiResponse<MessageWithUser[]>;
+};
+
+/**
  * Mark messages as read
  */
 export const markMessagesAsRead = async (data: { conversationUserId: string }): Promise<ApiResponse<void>> => {
