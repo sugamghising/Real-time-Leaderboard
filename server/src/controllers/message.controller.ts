@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createMessageSchema, markReadSchema } from "../schemas/message.schema";
 import * as messageService from "../services/message.service"
+import * as friendService from "../services/friend.service";
 
 export const sendMessage = async (req: Request, res: Response) => {
 
@@ -27,6 +28,9 @@ export const sendMessage = async (req: Request, res: Response) => {
             isRead: created.isRead,
             createdAt: created.createdAt,
         };
+
+
+
         //emit to receiver
         if (io) {
             io.to(`user:${toUserId}`).emit("message:new", messagePayload);
@@ -95,3 +99,25 @@ export const getUnreadCount = async (req: Request, res: Response) => {
         res.status(400).json({ error: (error as Error).message });
     }
 }
+
+export const getMessagePreviews = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.userId as string;
+        // get friends list
+        const friends = await friendService.listFriends(userId);
+
+        // for each friend entry, determine friendId
+        const previews = await Promise.all(
+            friends.map(async (f: any) => {
+                const friendId = f.friendId || f.friend?.id || (f.requesterId === userId ? f.receiverId : f.requesterId);
+                const last = await messageService.getLastMessageBetween(userId, friendId);
+                return { userId: friendId, message: last };
+            })
+        );
+
+        res.json({ previews });
+    } catch (error) {
+        console.error("Error getting message previews", error);
+        res.status(500).json({ error: (error as Error).message });
+    }
+};

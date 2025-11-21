@@ -99,3 +99,16 @@ export const syncUnreadCount = async (userId: string) => {
     await redis.set(UNREAD_KEY(userId), String(count));
     return count;
 };
+
+export const getLastMessageBetween = async (userA: string, userB: string) => {
+    const msg = await prisma.message.findFirst({
+        where: {
+            OR: [
+                { fromUserId: userA, toUserId: userB },
+                { fromUserId: userB, toUserId: userA }
+            ]
+        },
+        orderBy: { createdAt: 'desc' }
+    });
+    return msg || null;
+};

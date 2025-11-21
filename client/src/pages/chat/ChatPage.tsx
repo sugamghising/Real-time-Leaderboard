@@ -8,6 +8,7 @@ import {
   getConversation,
   sendMessage as sendMessageAPI,
   markMessagesAsRead,
+  getMessagePreviews,
 } from "../../api/endpoints/messages";
 import type { SendMessageData } from "../../types";
 
@@ -24,6 +25,20 @@ export const ChatPage = () => {
     queryKey: ["friends"],
     queryFn: () => getFriends(),
   });
+
+  const { data: previewsResponse } = useQuery({
+    queryKey: ["messages", "previews"],
+    queryFn: () => getMessagePreviews(),
+  });
+
+  const previews = (previewsResponse?.data || []) as {
+    userId: string;
+    message: any;
+  }[];
+  const previewsMap = previews.reduce((acc, p) => {
+    acc[p.userId] = p.message;
+    return acc;
+  }, {} as Record<string, any>);
 
   const { data: conversationResponse, isLoading: conversationLoading } =
     useQuery({
@@ -122,9 +137,7 @@ export const ChatPage = () => {
                         {friend.username || "Unknown User"}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
-                        {selectedUserId === friend.id && messages.length > 0
-                          ? messages[messages.length - 1]?.content
-                          : "No messages"}
+                        {previewsMap[friend.id]?.content || "No messages"}
                       </p>
                     </div>
                   </div>

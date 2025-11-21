@@ -29,6 +29,18 @@ export const getConversation = async (userId: string): Promise<ApiResponse<Messa
 };
 
 /**
+ * Get latest message preview per friend for current user
+ */
+export const getMessagePreviews = async (): Promise<ApiResponse<{ userId: string; message: MessageWithUser | null }[]>> => {
+    const response = await api.get('/v1/api/messages/previews');
+    const respData = response.data;
+    if (respData && Array.isArray(respData.previews)) {
+        return { data: respData.previews } as ApiResponse<{ userId: string; message: MessageWithUser | null }[]>;
+    }
+    return respData as ApiResponse<{ userId: string; message: MessageWithUser | null }[]>;
+};
+
+/**
  * Get a single most-recent message for preview purposes
  */
 export const getConversationPreview = async (userId: string): Promise<ApiResponse<MessageWithUser[]>> => {

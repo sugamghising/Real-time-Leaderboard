@@ -8,7 +8,13 @@ import { useAuthStore } from "../stores/authStore";
 import { useChatStore } from "../stores/chatStore";
 import { useFriendStore } from "../stores/friendStore";
 import { SocketContext } from "../contexts/SocketContext";
-import type { Message, Friendship } from "../types";
+import type {
+  Message,
+  MessageWithUser,
+  Friendship,
+  ApiResponse,
+} from "../types";
+import { queryClient } from "../lib/queryClient";
 
 interface SocketProviderProps {
   children: ReactNode;
@@ -80,6 +86,81 @@ export default function SocketProvider({ children }: SocketProviderProps) {
       console.log("📨 New message:", data);
       addMessage(data.fromUserId, data);
       incrementUnread(data.fromUserId);
+      // update previews cache directly so UI shows latest message immediately
+      try {
+        const previewsKey = ["messages", "previews"] as const;
+        const existing =
+          queryClient.getQueryData<
+            ApiResponse<
+              { userId: string; message: Message | MessageWithUser | null }[]
+            >
+          >(previewsKey);
+        const previewItem = { userId: data.fromUserId, message: data };
+        if (existing && Array.isArray(existing.data)) {
+          const arr = [...existing.data];
+          const idx = arr.findIndex((p) => p.userId === data.fromUserId);
+          if (idx >= 0) arr[idx] = previewItem;
+          else arr.unshift(previewItem);
+          queryClient.setQueryData(previewsKey, { ...existing, data: arr });
+        } else {
+          queryClient.setQueryData(previewsKey, { data: [previewItem] });
+        }
+
+        // also update conversation cache for this friend (if open)
+        const convKey = ["conversation", data.fromUserId] as const;
+        const convExisting =
+          queryClient.getQueryData<ApiResponse<(Message | MessageWithUser)[]>>(
+            convKey
+          );
+        if (convExisting && Array.isArray(convExisting.data)) {
+          // append message to conversation
+          const convArr = [...convExisting.data, data];
+          queryClient.setQueryData(convKey, { ...convExisting, data: convArr });
+        } else {
+          // set conversation with this single message
+          queryClient.setQueryData(convKey, { data: [data] });
+        }
+      } catch (error) {
+        console.log("Error updating previews/conversation cache:", error);
+      }
+    });
+
+    // When a message is sent by current user, server emits `message:sent` to the sender
+    newSocket.on("message:sent", (data: Message) => {
+      console.log("📤 Message sent:", data);
+      // update previews for the recipient user
+      try {
+        const previewsKey = ["messages", "previews"] as const;
+        const existing =
+          queryClient.getQueryData<
+            ApiResponse<
+              { userId: string; message: Message | MessageWithUser | null }[]
+            >
+          >(previewsKey);
+        const previewItem = { userId: data.toUserId, message: data };
+        if (existing && Array.isArray(existing.data)) {
+          const arr = [...existing.data];
+          const idx = arr.findIndex((p) => p.userId === data.toUserId);
+          if (idx >= 0) arr[idx] = previewItem;
+          else arr.unshift(previewItem);
+          queryClient.setQueryData(previewsKey, { ...existing, data: arr });
+        } else {
+          queryClient.setQueryData(previewsKey, { data: [previewItem] });
+        }
+
+        // update conversation cache for the recipient if it's open
+        const convKey = ["conversation", data.toUserId] as const;
+        const convExisting =
+          queryClient.getQueryData<ApiResponse<(Message | MessageWithUser)[]>>(
+            convKey
+          );
+        if (convExisting && Array.isArray(convExisting.data)) {
+          const convArr = [...convExisting.data, data];
+          queryClient.setQueryData(convKey, { ...convExisting, data: convArr });
+        }
+      } catch (error) {
+        console.log("Error updating previews on sent message:", error);
+      }
     });
 
     // Friend request handling
@@ -91,7 +172,17 @@ export default function SocketProvider({ children }: SocketProviderProps) {
 
     newSocket.on("friend:accepted", (data: { friendship: Friendship }) => {
       console.log("✅ Friend request accepted:", data);
-      // You can add toast notification here
+      // refresh friend lists and message previews
+      try {
+        queryClient.invalidateQueries({ queryKey: ["friends"] });
+        queryClient.invalidateQueries({ queryKey: ["friend-requests"] });
+        queryClient.invalidateQueries({ queryKey: ["messages", "previews"] });
+      } catch (error) {
+        console.log(
+          "Error in refresh friends list and message previews.",
+          error
+        );
+      }
     });
 
     // Leaderboard updates
