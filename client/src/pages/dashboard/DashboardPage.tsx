@@ -7,17 +7,50 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { getGlobalLeaderboard } from "../../api/endpoints/leaderboard";
+import { getFriends } from "../../api/endpoints/friends";
+import { useAuthStore } from "../../stores/authStore";
 import { Link } from "react-router-dom";
 
 export const DashboardPage = () => {
   const { data: leaderboard } = useQuery({
     queryKey: ["leaderboard", "global"],
-    queryFn: () => getGlobalLeaderboard({ limit: 5 }),
+    queryFn: () => getGlobalLeaderboard({ limit: 50 }),
   });
 
+  const { user } = useAuthStore();
+  const { data: friendsResp } = useQuery({
+    queryKey: ["friends"],
+    queryFn: () => getFriends(),
+  });
+
+  // derive dynamic stats
+  const friendCount = friendsResp?.data ? friendsResp.data.length : 0;
+  let yourRank = "#-";
+  if (user && leaderboard?.data && leaderboard.data.length > 0) {
+    const found = leaderboard.data.find(
+      (e: any) =>
+        e.userId === user.id ||
+        e.user?.id === user.id ||
+        e.user?.username === user.username
+    );
+    if (found && typeof found.rank !== "undefined") {
+      yourRank = `#${found.rank}`;
+    }
+  }
+
   const stats = [
-    { name: "Your Rank", value: "#-", icon: Trophy, color: "text-yellow-600" },
-    { name: "Friends", value: "0", icon: Users, color: "text-blue-600" },
+    {
+      name: "Your Rank",
+      value: yourRank,
+      icon: Trophy,
+      color: "text-yellow-600",
+    },
+    {
+      name: "Friends",
+      value: String(friendCount),
+      icon: Users,
+      color: "text-blue-600",
+    },
     {
       name: "Games Played",
       value: "0",
