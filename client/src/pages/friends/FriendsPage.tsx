@@ -135,10 +135,24 @@ export const FriendsPage = () => {
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                        {(
-                          request.requester?.username?.charAt(0) || ""
-                        ).toUpperCase()}
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100">
+                        {request.requester?.avatarUrl ||
+                        (request.requester as any)?.profilePicture ? (
+                          <img
+                            src={
+                              request.requester?.avatarUrl ||
+                              (request.requester as any).profilePicture
+                            }
+                            alt={`${request.requester?.username} avatar`}
+                            className="w-10 h-10 object-cover"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                            {(
+                              request.requester?.username?.charAt(0) || ""
+                            ).toUpperCase()}
+                          </div>
+                        )}
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">
@@ -204,9 +218,24 @@ export const FriendsPage = () => {
                     className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-                        {(friend?.username?.charAt(0) || "").toUpperCase() ||
-                          "?"}
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100">
+                        {friend?.avatarUrl ||
+                        (friend as any)?.profilePicture ? (
+                          <img
+                            src={
+                              friend?.avatarUrl ||
+                              (friend as any).profilePicture
+                            }
+                            alt={`${friend?.username} avatar`}
+                            className="w-12 h-12 object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                            {(
+                              friend?.username?.charAt(0) || ""
+                            ).toUpperCase() || "?"}
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 truncate">
@@ -252,8 +281,18 @@ export const FriendsPage = () => {
                   className="flex items-center justify-between p-3 border rounded-lg"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                      {(u.username?.charAt(0) || "").toUpperCase()}
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100">
+                      {u.profilePicture || (u as any).avatarUrl ? (
+                        <img
+                          src={u.profilePicture || (u as any).avatarUrl}
+                          alt={`${u.username} avatar`}
+                          className="w-10 h-10 object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                          {(u.username?.charAt(0) || "").toUpperCase()}
+                        </div>
+                      )}
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">{u.username}</p>

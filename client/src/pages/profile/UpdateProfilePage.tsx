@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { updateProfile, uploadProfilePicture } from "../../api/endpoints/users";
@@ -6,15 +6,24 @@ import { useAuthStore } from "../../stores/authStore";
 import { useToast } from "../../lib/toast";
 
 export const UpdateProfilePage = () => {
-  const { user, setUser, updateUser } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const [displayName, setDisplayName] = useState(user?.displayName ?? "");
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(
     user?.avatarUrl ?? ""
   );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
+
+  // revoke preview object URL on change/unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -62,24 +71,63 @@ export const UpdateProfilePage = () => {
             <label className="block text-sm text-gray-700">
               Profile Picture
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const f = e.target.files && e.target.files[0];
-                setAvatarFile(f ?? null);
-                if (f) {
-                  // revoke existing object URL to avoid leaks
-                  if (objectUrl) {
-                    URL.revokeObjectURL(objectUrl);
+            <div className="flex items-center gap-4">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const f = e.target.files && e.target.files[0];
+                  setAvatarFile(f ?? null);
+                  if (f) {
+                    // revoke previous preview to avoid leaks
+                    if (previewUrl) {
+                      URL.revokeObjectURL(previewUrl);
+                    }
+                    const url = URL.createObjectURL(f);
+                    setPreviewUrl(url);
+                    // do NOT set avatarUrl input when selecting a file
                   }
-                  const url = URL.createObjectURL(f);
-                  setObjectUrl(url);
-                  setAvatarUrl(url);
-                }
-              }}
-              className="mt-1"
-            />
+                }}
+                className="mt-1"
+              />
+
+              {/* Preview thumbnail: show selected file preview first, otherwise show current avatarUrl */}
+              <div className="w-16 h-16 rounded overflow-hidden bg-gray-100">
+                {previewUrl ? (
+                  // local preview
+                  <img
+                    src={previewUrl}
+                    alt="preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt="current avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    No image
+                  </div>
+                )}
+              </div>
+
+              {avatarFile && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    // clear selected file and preview
+                    if (previewUrl) URL.revokeObjectURL(previewUrl);
+                    setAvatarFile(null);
+                    setPreviewUrl(null);
+                  }}
+                  className="text-sm text-red-600 px-2 py-1 rounded border"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
             <p className="text-sm text-gray-500 mt-2">
               Or provide a direct image URL below (optional)
             </p>

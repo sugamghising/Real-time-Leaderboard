@@ -28,6 +28,8 @@ export const LoginPage = () => {
         username: response.user.name,
         email: response.user.email,
         role: response.user.role,
+        displayName: response.user.displayName ?? null,
+        avatarUrl: response.user.avatarUrl ?? null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
