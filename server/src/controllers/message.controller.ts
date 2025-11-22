@@ -70,9 +70,30 @@ export const getConversation = async (req: Request, res: Response) => {
 
 export const markMessagesAsRead = async (req: Request, res: Response) => {
     try {
-        const body = markReadSchema.parse(req.body);
         const userId = req.user?.userId as string;
-        const { messageIds } = body;
+
+        let messageIds: string[] | undefined = undefined;
+
+        // Support two shapes: { messageIds: string[] } or { conversationUserId: string }
+        if (Array.isArray(req.body?.messageIds)) {
+            // validate using schema
+            const body = markReadSchema.parse(req.body);
+            messageIds = body.messageIds;
+        } else if (typeof req.body?.conversationUserId === 'string') {
+            const conversationUserId = req.body.conversationUserId as string;
+            // find unread messages in this conversation where current user is the recipient
+            const msgs = await messageService.getConversation(conversationUserId, userId, 1000);
+            // messageService.getConversation expects (userA, userB) and returns messages between them
+            // Filter messages that are to current user and unread
+            messageIds = msgs.filter((m: any) => m.toUserId === userId && !m.isRead).map((m: any) => m.id);
+        } else {
+            // Neither shape provided
+            return res.status(400).json({ error: 'messageIds or conversationUserId is required' });
+        }
+
+        if (!messageIds || messageIds.length === 0) {
+            return res.json({ success: true, updated: 0, unreadCount: await messageService.getUnreadCount(userId) });
+        }
 
         const { updated } = await messageService.markMessagesAsRead(userId, messageIds);
 

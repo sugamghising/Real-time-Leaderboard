@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { Send, MessageSquare } from "lucide-react";
 import { useChatStore } from "../../stores/chatStore";
+import { useAuthStore } from "../../stores/authStore";
 import { getFriends } from "../../api/endpoints/friends";
 import {
   getConversation,
@@ -40,6 +41,18 @@ export const ChatPage = () => {
     return acc;
   }, {} as Record<string, any>);
 
+  const authUser = useAuthStore((s) => s.user);
+  const authUserId = authUser?.id;
+
+  // helper: create initials from username
+  const initials = (name?: string) =>
+    (name || "")
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
   const { data: conversationResponse, isLoading: conversationLoading } =
     useQuery({
       queryKey: ["conversation", selectedUserId],
@@ -49,6 +62,7 @@ export const ChatPage = () => {
 
   const friends = friendsResponse?.data || [];
   const messages = conversationResponse?.data || [];
+  const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const sendMessageMutation = useMutation({
     mutationFn: (data: SendMessageData) => sendMessageAPI(data),
@@ -76,6 +90,14 @@ export const ChatPage = () => {
       markReadMutation.mutate({ conversationUserId: selectedUserId });
     }
   }, [selectedUserId, messages.length]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    const el = messagesRef.current;
+    if (!el) return;
+    // scroll to bottom smoothly
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages.length, selectedUserId]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,24 +145,56 @@ export const ChatPage = () => {
             friends.map((friendship: any) => {
               const friend = getFriendUser(friendship);
               if (!friend) return null;
+              const last = previewsMap[friend.id];
+              const snippet = last?.content || "No messages";
+              const lastTime = last?.createdAt
+                ? new Date(last.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : null;
+              const unread =
+                last && last.toUserId === authUserId && !last.isRead;
+
               return (
                 <button
                   key={friendship.id}
                   onClick={() => setSelectedUserId(friend.id)}
-                  className={`w-full p-4 border-b border-gray-200 hover:bg-gray-50 text-left ${
+                  className={`w-full p-3 border-b border-gray-200 hover:bg-gray-50 text-left flex items-center gap-3 ${
                     selectedUserId === friend.id ? "bg-blue-50" : ""
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                    {friend.avatarUrl ? (
+                      <img
+                        src={friend.avatarUrl}
+                        alt="avatar"
+                        className="w-10 h-10 object-cover"
+                      />
+                    ) : (
+                      <span className="text-sm text-gray-700">
+                        {initials(friend.username)}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
                       <p className="font-medium text-gray-900 truncate">
                         {friend.username || "Unknown User"}
                       </p>
-                      <p className="text-sm text-gray-500 truncate">
-                        {previewsMap[friend.id]?.content || "No messages"}
-                      </p>
+                      {lastTime && (
+                        <p className="text-xs text-gray-400">{lastTime}</p>
+                      )}
                     </div>
+                    <p className="text-sm text-gray-500 truncate">{snippet}</p>
                   </div>
+
+                  {unread && (
+                    <span className="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                      New
+                    </span>
+                  )}
                 </button>
               );
             })
@@ -165,35 +219,80 @@ export const ChatPage = () => {
               </h3>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div
+              ref={messagesRef}
+              className="flex-1 overflow-y-auto p-4 space-y-4"
+            >
               {conversationLoading ? (
                 <p className="text-gray-500 text-center">Loading messages...</p>
               ) : messages.length === 0 ? (
                 <p className="text-gray-500 text-center">No messages yet</p>
               ) : (
-                messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${
-                      message.fromUserId === selectedUserId
-                        ? "justify-start"
-                        : "justify-end"
-                    }`}
-                  >
+                messages.map((message, idx) => {
+                  const isOwn = message.fromUserId === authUserId;
+                  // show avatar when the next message is from a different sender or it's the last message
+                  const next = messages[idx + 1];
+                  const showAvatar =
+                    !next || next.fromUserId !== message.fromUserId;
+                  const timeLabel = new Date(
+                    message.createdAt
+                  ).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
+
+                  return (
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        message.fromUserId === selectedUserId
-                          ? "bg-gray-200 text-gray-900"
-                          : "bg-blue-600 text-white"
+                      key={message.id}
+                      className={`flex items-end gap-2 ${
+                        isOwn ? "justify-end" : "justify-start"
                       }`}
                     >
-                      <p>{message.content}</p>
-                      <p className="text-xs mt-1 opacity-70">
-                        {new Date(message.createdAt).toLocaleTimeString()}
-                      </p>
+                      {/* Avatar for other user */}
+                      {!isOwn && showAvatar && (
+                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-700 overflow-hidden">
+                          {selectedUser?.avatarUrl ? (
+                            <img
+                              src={selectedUser.avatarUrl}
+                              alt="avatar"
+                              className="w-8 h-8 object-cover"
+                            />
+                          ) : (
+                            <span>{initials(selectedUser?.username)}</span>
+                          )}
+                        </div>
+                      )}
+
+                      <div
+                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                          isOwn
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-200 text-gray-900"
+                        }`}
+                      >
+                        <p className="whitespace-pre-wrap">{message.content}</p>
+                        <p className="text-xs mt-1 opacity-70 text-right">
+                          {timeLabel}
+                        </p>
+                      </div>
+
+                      {/* Avatar placeholder for own messages if desired */}
+                      {isOwn && showAvatar && (
+                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-700 overflow-hidden">
+                          {authUser?.avatarUrl ? (
+                            <img
+                              src={authUser.avatarUrl}
+                              alt="you"
+                              className="w-6 h-6 object-cover"
+                            />
+                          ) : (
+                            <span>{initials(authUser?.username)}</span>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 
@@ -201,14 +300,19 @@ export const ChatPage = () => {
               onSubmit={handleSendMessage}
               className="p-4 border-t border-gray-200"
             >
-              <div className="flex gap-2">
-                <input
-                  type="text"
+              <div className="flex gap-2 items-end">
+                <textarea
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Type a message..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-12 max-h-40"
                   disabled={sendMessageMutation.isPending}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage(e as any);
+                    }
+                  }}
                 />
                 <button
                   type="submit"
