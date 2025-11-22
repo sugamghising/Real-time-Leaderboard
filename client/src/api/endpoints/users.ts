@@ -71,3 +71,40 @@ export const getUserStats = async (userId: string): Promise<ApiResponse<{
     }>>(`/v1/api/users/${userId}/stats`);
     return response.data;
 };
+
+/**
+ * Admin: Get all users
+ */
+export const getAllUsers = async (): Promise<ApiResponse<User[]>> => {
+    const response = await api.get('/v1/api/users');
+    const resp = response.data;
+    // server may return the raw array or an ApiResponse wrapper
+    if (Array.isArray(resp)) {
+        return { data: resp } as unknown as ApiResponse<User[]>;
+    }
+    if (resp && typeof resp === 'object' && 'data' in resp) {
+        return resp as ApiResponse<User[]>;
+    }
+    // fallback: empty
+    return { data: [] } as ApiResponse<User[]>;
+};
+
+/**
+ * Admin: Update any user (role, displayName, avatarUrl, etc.)
+ */
+export const adminUpdateUser = async (userId: string, data: Partial<User>): Promise<ApiResponse<User>> => {
+    const response = await api.put(`/v1/api/users/${userId}`, data);
+    const respData = response.data;
+    if (respData && respData.user) {
+        return { data: respData.user } as ApiResponse<User>;
+    }
+    return respData as ApiResponse<User>;
+};
+
+/**
+ * Admin: Delete a user
+ */
+export const adminDeleteUser = async (userId: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/v1/api/users/${userId}`);
+    return response.data as ApiResponse<null>;
+};

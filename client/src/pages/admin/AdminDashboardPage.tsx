@@ -56,13 +56,16 @@ export const AdminDashboardPage = () => {
           </p>
         </Link>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <Link
+          to="/admin/users"
+          className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+        >
           <Users className="w-10 h-10 text-blue-600 mb-3" />
           <h3 className="text-lg font-semibold text-gray-900">Manage Users</h3>
           <p className="text-sm text-gray-600 mt-1">
-            View and manage user accounts (Coming soon)
+            View and manage user accounts
           </p>
-        </div>
+        </Link>
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ import { FriendsPage } from "./pages/friends/FriendsPage";
 // Admin Pages
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
 import { AdminGamesPage } from "./pages/admin/AdminGamesPage";
+import ManageUsersPage from "./pages/admin/ManageUsersPage";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -109,6 +110,7 @@ function App() {
             >
               <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="/admin/games" element={<AdminGamesPage />} />
+              <Route path="/admin/users" element={<ManageUsersPage />} />
             </Route>
 
             {/* Redirect root to dashboard or login */}
