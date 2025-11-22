@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as userService from '../services/user.service';
 import { updateUserSchema } from '../schemas/user.schema';
+import { uploadToCloudinary } from '../utils/cloudinaryUpload';
 
 
 
@@ -97,6 +98,26 @@ export const searchUsers = async (req: Request, res: Response) => {
         res.status(200).json(results);
     } catch (error) {
         console.error('Error in searching users', error);
+        res.status(500).json({ error: (error as Error).message });
+    }
+};
+
+export const uploadProfilePicture = async (req: Request, res: Response) => {
+    try {
+        if (!req.user?.userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        const imageUrl = await uploadToCloudinary(req.file.buffer);
+        const updatedUser = await userService.updateUser(req.user.userId, { avatarUrl: imageUrl });
+
+        res.status(200).json({ message: 'Profile picture updated', user: updatedUser });
+    } catch (error) {
+        console.error('Error uploading profile picture', error);
         res.status(500).json({ error: (error as Error).message });
     }
 };

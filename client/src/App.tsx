@@ -15,6 +15,7 @@ import { RegisterPage } from "./pages/auth/RegisterPage";
 // Dashboard Pages
 import { DashboardPage } from "./pages/dashboard/DashboardPage";
 import { ProfilePage } from "./pages/profile/ProfilePage";
+import UpdateProfilePage from "./pages/profile/UpdateProfilePage";
 
 // Games Pages
 import { GamesPage } from "./pages/games/GamesPage";
@@ -77,6 +78,7 @@ function App() {
             >
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/edit" element={<UpdateProfilePage />} />
 
               {/* Games Routes */}
               <Route path="/games" element={<GamesPage />} />
