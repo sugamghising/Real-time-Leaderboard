@@ -26,6 +26,8 @@ interface User {
     name: string;
     email: string;
     role: "USER" | "ADMIN";
+    displayName?: string | null;
+    avatarUrl?: string | null;
 }
 
 interface AuthResponse {
