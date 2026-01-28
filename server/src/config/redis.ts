@@ -4,18 +4,23 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Configure Redis client with a socket connect timeout and simple reconnect strategy
-const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+const redisPassword = process.env.REDIS_PASSWORD;
+const redisHost = process.env.REDIS_HOST;
+const redisPort = process.env.REDIS_PORT || '6379';
+
+if (!redisHost || !redisPort) {
+    console.warn("Redis host/port not set; using defaults (127.0.0.1:6379).");
+}
+
+const host = redisHost || '127.0.0.1';
+const port = Number(redisPort) || 6379;
 
 export const redis = createClient({
-    url: redisUrl,
+    username: 'default',
+    ...(redisPassword ? { password: redisPassword } : {}),
     socket: {
-        // 10s connect timeout
-        connectTimeout: 10_000,
-        // Reconnect strategy: return delay in ms (or false/throw to stop)
-        reconnectStrategy: (retries: number) => {
-            // after many retries cap at 5s
-            return Math.min(retries * 100, 5000);
-        }
+        host,
+        port
     }
 });
 

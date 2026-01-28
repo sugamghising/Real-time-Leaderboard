@@ -39,6 +39,10 @@ app.get('/', (_req, res) => {
     res.send('Hello from Backend.');
 })
 
+app.get('/health', (_req, res) => {
+    res.status(200).send('Server is healthy');
+});
+
 //  routes
 app.use('/v1/api/auth', authRouter);
 app.use('/v1/api/users', userRouter);
