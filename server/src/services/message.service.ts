@@ -67,7 +67,7 @@ export const markMessagesAsRead = async (userId: string, messageIds: string[]) =
 
     //getcurrent value and update the unread counter
     const key = UNREAD_KEY(userId);
-    const val = await redis.get(key);
+    const val = await redis.get<string>(key);
     const current = val ? parseInt(val, 10) : 0;
     const newVal = Math.max(0, current - decBy);
     await redis.set(key, String(newVal));
@@ -76,7 +76,7 @@ export const markMessagesAsRead = async (userId: string, messageIds: string[]) =
 }
 
 export const getUnreadCount = async (userId: string) => {
-    const val = await redis.get(UNREAD_KEY(userId));
+    const val = await redis.get<string>(UNREAD_KEY(userId));
     return val ? parseInt(val, 10) : 0;
 };
 

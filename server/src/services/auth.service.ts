@@ -50,7 +50,7 @@ export const loginUser = async (email: string, password: string) => {
         userId: user.id,
         tokenHash: refreshToken
     }), {
-        EX: 2 * 24 * 60 * 60 // 2 days in seconds
+        ex: 2 * 24 * 60 * 60 // 2 days in seconds
     });
 
     return {
@@ -115,7 +115,7 @@ export const refreshAccessToken = async (oldRefreshToken: string) => {
         userId: tokenRecord.user.id,
         tokenHash: newRefreshToken
     }), {
-        EX: 2 * 24 * 60 * 60
+        ex: 2 * 24 * 60 * 60
     });
 
     return {
