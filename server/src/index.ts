@@ -11,6 +11,7 @@ import http from "http";
 import { initSocket } from './config/socket';
 import messageRouter from './routes/message.route';
 import friendRouter from './routes/friend.route';
+import sessionRouter from './routes/session.routes';
 
 
 const app = express();
@@ -51,6 +52,7 @@ app.use('/v1/api/scores', scoreRouter);
 app.use('/v1/api/leaderboard', leaderboardRouter);
 app.use('/v1/api/messages', messageRouter);
 app.use('/v1/api/friends', friendRouter);
+app.use('/v1/api/sessions', sessionRouter);
 
 
 server.listen(PORT, () => {

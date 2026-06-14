@@ -26,6 +26,7 @@ model User {
 
   // Relations
   scores               Score[]
+  gameSessions         GameSession[]
   games                Game[]         @relation("UserGames")
   messagesSent         Message[]      @relation("MessagesSent")
   messagesRecv         Message[]      @relation("MessagesRecv")
@@ -48,6 +49,7 @@ model Game {
   // Relations
   createdBy User    @relation("UserGames", fields: [createdById], references: [id])
   scores    Score[]
+  sessions  GameSession[]
 }
 
 model Score {
@@ -96,6 +98,23 @@ model Message {
   @@index([toUserId, createdAt])
 }
 
+model GameSession {
+  id        String        @id @default(uuid())
+  userId    String
+  gameId    String
+  score     Int
+  duration  Int?
+  status    SessionStatus @default(COMPLETED)
+  meta      Json?
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  game Game @relation(fields: [gameId], references: [id])
+
+  @@index([userId, gameId])
+  @@index([gameId, createdAt])
+}
+
 model RefreshToken {
   id        String   @id @default(uuid())
   userId    String
@@ -110,6 +129,11 @@ model RefreshToken {
 enum Role {
   USER
   ADMIN
+}
+
+enum SessionStatus {
+  COMPLETED
+  ABORTED
 }
 
 enum FriendStatus {

@@ -20,6 +20,7 @@ import UpdateProfilePage from "./pages/profile/UpdateProfilePage";
 // Games Pages
 import { GamesPage } from "./pages/games/GamesPage";
 import { GameDetailPage } from "./pages/games/GameDetailPage";
+import { GameHistoryPage } from "./pages/games/GameHistoryPage";
 
 // Leaderboard Pages
 import { GlobalLeaderboardPage } from "./pages/leaderboard/GlobalLeaderboardPage";
@@ -84,6 +85,7 @@ function App() {
               {/* Games Routes */}
               <Route path="/games" element={<GamesPage />} />
               <Route path="/games/:gameId" element={<GameDetailPage />} />
+              <Route path="/games/:gameId/history" element={<GameHistoryPage />} />
 
               {/* Leaderboard Routes */}
               <Route path="/leaderboard" element={<GlobalLeaderboardPage />} />
