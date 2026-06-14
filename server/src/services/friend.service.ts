@@ -155,6 +155,6 @@ export const listPendingrequest = async (userId: string) => {
 
 
 export const getPendingCount = async (userId: string) => {
-    const val = await redis.get(FRIEND_REQ_UNREAD_KEY(userId));
+    const val = await redis.get<string>(FRIEND_REQ_UNREAD_KEY(userId));
     return val ? parseInt(val, 10) : 0;
 }
