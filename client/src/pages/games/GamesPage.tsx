@@ -20,8 +20,7 @@ export const GamesPage = () => {
     queryKey: ["games"],
     queryFn: async () => {
       const response = await getGames();
-      // The API returns games directly as an array
-      return Array.isArray(response) ? response : [];
+      return response?.data || [];
     },
   });
 

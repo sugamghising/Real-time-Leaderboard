@@ -1,4 +1,5 @@
 import prisma from '../config/db';
+import { redis } from '../config/redis';
 
 interface CreateGameData {
     slug: string;
@@ -79,6 +80,7 @@ export const updateGame = (gameId: string, data: UpdateGameData) => {
     });
 };
 
-export const deleteGame = (gameId: string) => {
+export const deleteGame = async (gameId: string) => {
+    await redis.del(`leaderboard:game:${gameId}`).catch(() => {});
     return prisma.game.delete({ where: { id: gameId } });
 };

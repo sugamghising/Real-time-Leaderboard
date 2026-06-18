@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  getAllUsers,
-  adminUpdateUser,
-  adminDeleteUser,
-} from "../../api/endpoints/users";
+import { getAllUsers, adminUpdateUser, adminDeleteUser } from "../../api/endpoints/users";
 import { useAuthStore } from "../../stores/authStore";
+import { useToast } from "../../lib/toast";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 import type { User, UserRole } from "../../types";
 
 export const ManageUsersPage = () => {
   const queryClient = useQueryClient();
   const { user: authUser } = useAuthStore();
+  const { addToast } = useToast();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [role, setRole] = useState<UserRole>("USER");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data: usersResponse, isLoading } = useQuery({
     queryKey: ["admin", "users"],
@@ -24,14 +24,27 @@ export const ManageUsersPage = () => {
   const updateMutation = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: Partial<User> }) =>
       adminUpdateUser(id, payload),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "users"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      setEditingId(null);
+      addToast("User role updated", "success");
+    },
+    onError: (err: any) => {
+      addToast(err.response?.data?.error || "Failed to update user", "error");
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminDeleteUser(id),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "users"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      setDeletingId(null);
+      addToast("User deleted successfully", "success");
+    },
+    onError: (err: any) => {
+      setDeletingId(null);
+      addToast(err.response?.data?.error || "Failed to delete user", "error");
+    },
   });
 
   const startEdit = (u: User) => {
@@ -41,17 +54,6 @@ export const ManageUsersPage = () => {
 
   const saveEdit = (id: string) => {
     updateMutation.mutate({ id, payload: { role } });
-    setEditingId(null);
-  };
-
-  const confirmDelete = (id: string) => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this user? This action cannot be undone."
-      )
-    )
-      return;
-    deleteMutation.mutate(id);
   };
 
   return (
@@ -65,54 +67,29 @@ export const ManageUsersPage = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
                 <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-4 text-sm text-gray-500 text-center"
-                  >
-                    Loading users...
-                  </td>
+                  <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">Loading users...</td>
                 </tr>
               ) : users.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-4 text-sm text-gray-500 text-center"
-                  >
-                    No users found
-                  </td>
+                  <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">No users found</td>
                 </tr>
               ) : (
                 users.map((u: User) => (
-                  <tr
-                    key={u.id}
-                    className={u.id === authUser?.id ? "bg-gray-50" : ""}
-                  >
+                  <tr key={u.id} className={u.id === authUser?.id ? "bg-gray-50" : ""}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
                           {u.avatarUrl ? (
-                            <img
-                              src={u.avatarUrl}
-                              alt="avatar"
-                              className="w-10 h-10 object-cover"
-                            />
+                            <img src={u.avatarUrl} alt="avatar" className="w-10 h-10 object-cover" />
                           ) : (
                             <div className="flex items-center justify-center w-full h-full text-sm text-gray-700">
                               {(u.username || "").slice(0, 2).toUpperCase()}
@@ -120,18 +97,12 @@ export const ManageUsersPage = () => {
                           )}
                         </div>
                         <div className="truncate">
-                          <div className="text-sm font-medium text-gray-900 truncate">
-                            {u.username}
-                          </div>
-                          <div className="text-xs text-gray-500 truncate">
-                            {u.displayName || ""}
-                          </div>
+                          <div className="text-sm font-medium text-gray-900 truncate">{u.username}</div>
+                          <div className="text-xs text-gray-500 truncate">{u.displayName || ""}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {u.email}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{u.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {editingId === u.id ? (
                         <select
@@ -151,9 +122,10 @@ export const ManageUsersPage = () => {
                         <>
                           <button
                             onClick={() => saveEdit(u.id)}
-                            className="px-3 py-1 bg-green-600 text-white rounded"
+                            disabled={updateMutation.isPending}
+                            className="px-3 py-1 bg-green-600 text-white rounded disabled:opacity-50"
                           >
-                            Save
+                            {updateMutation.isPending ? "Saving..." : "Save"}
                           </button>
                           <button
                             onClick={() => setEditingId(null)}
@@ -174,7 +146,7 @@ export const ManageUsersPage = () => {
                           )}
                           {u.id !== authUser?.id && (
                             <button
-                              onClick={() => confirmDelete(u.id)}
+                              onClick={() => setDeletingId(u.id)}
                               className="px-3 py-1 bg-red-600 text-white rounded"
                             >
                               Delete
@@ -190,6 +162,17 @@ export const ManageUsersPage = () => {
           </table>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={!!deletingId}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        loading={deleteMutation.isPending}
+        onConfirm={() => deletingId && deleteMutation.mutate(deletingId)}
+        onCancel={() => setDeletingId(null)}
+      />
     </div>
   );
 };

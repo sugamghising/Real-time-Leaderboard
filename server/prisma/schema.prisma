@@ -61,7 +61,7 @@ model Score {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
-  game Game @relation(fields: [gameId], references: [id])
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@index([gameId, createdAt])
   @@index([userId])
@@ -109,7 +109,7 @@ model GameSession {
   createdAt DateTime      @default(now())
 
   user User @relation(fields: [userId], references: [id])
-  game Game @relation(fields: [gameId], references: [id])
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@index([userId, gameId])
   @@index([gameId, createdAt])
