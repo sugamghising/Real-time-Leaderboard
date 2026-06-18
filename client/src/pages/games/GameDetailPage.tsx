@@ -7,6 +7,7 @@ import { getSessionStats } from "../../api/endpoints/sessions";
 import { SubmitScoreModal } from "../../components/features/SubmitScoreModal";
 import { ClickSpeed } from "../../components/games/ClickSpeed";
 import { ReactionTime } from "../../components/games/ReactionTime";
+import { NumberMemory } from "../../components/games/NumberMemory";
 import { useState, useMemo } from "react";
 
 export const GameDetailPage = () => {
@@ -35,6 +36,8 @@ export const GameDetailPage = () => {
         return ClickSpeed;
       case "reaction-time":
         return ReactionTime;
+      case "number-memory":
+        return NumberMemory;
       default:
         return null;
     }
