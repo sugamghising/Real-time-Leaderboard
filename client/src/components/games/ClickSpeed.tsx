@@ -85,7 +85,7 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
       : "0.0";
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-surface rounded-md border border-border shadow-sm p-6">
       {phase === "idle" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Click Speed Test</h2>
@@ -95,17 +95,17 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
           </p>
           <div className="flex justify-center gap-8 text-sm text-gray-500">
             <div>
-              <span className="block text-2xl font-bold text-blue-600">10s</span>
+              <span className="block text-2xl font-bold text-primary">10s</span>
               Duration
             </div>
             <div>
-              <span className="block text-2xl font-bold text-green-600">CPS</span>
+              <span className="block text-2xl font-bold text-success">CPS</span>
               Score
             </div>
           </div>
           <button
             onClick={startGame}
-            className="px-8 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-8 py-3 bg-primary text-white text-lg font-semibold rounded-none hover:bg-[#1A1A1A] transition-colors"
           >
             Start Game
           </button>
@@ -120,18 +120,18 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
               <span className="text-sm text-gray-500">Time Left</span>
             </div>
             <div>
-              <span className="block text-3xl font-bold text-blue-600">{clicks}</span>
+              <span className="block text-3xl font-bold text-primary">{clicks}</span>
               <span className="text-sm text-gray-500">Clicks</span>
             </div>
             <div>
-              <span className="block text-3xl font-bold text-green-600">{cps}</span>
+              <span className="block text-3xl font-bold text-success">{cps}</span>
               <span className="text-sm text-gray-500">CPS</span>
             </div>
           </div>
           <button
             ref={clickAreaRef}
             onClick={handleClick}
-            className="w-full h-48 bg-blue-50 border-2 border-blue-200 rounded-xl text-2xl font-bold text-blue-700 hover:bg-blue-100 active:bg-blue-200 active:scale-95 transition-all select-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full h-48 bg-[#F5F5F5] border-2 border-border rounded-none text-2xl font-bold text-primary hover:bg-[#EEEEEE] active:bg-[#E0E0E0] active:scale-95 transition-all select-none focus:outline-none"
           >
             CLICK HERE
           </button>
@@ -144,11 +144,11 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
           <h2 className="text-2xl font-bold text-gray-900">Time's Up!</h2>
           <div className="flex justify-center gap-8">
             <div>
-              <span className="block text-4xl font-bold text-blue-600">{clicks}</span>
+              <span className="block text-4xl font-bold text-primary">{clicks}</span>
               <span className="text-sm text-gray-500">Total Clicks</span>
             </div>
             <div>
-              <span className="block text-4xl font-bold text-green-600">{cps}</span>
+              <span className="block text-4xl font-bold text-success">{cps}</span>
               <span className="text-sm text-gray-500">CPS</span>
             </div>
           </div>
@@ -161,20 +161,20 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
           )}
 
           {sessionMutation.isSuccess && (
-            <div className="p-4 bg-green-50 rounded-lg text-green-700 font-medium">
+            <div className="p-4 bg-[#F0FDF4] rounded-none text-green-700 font-medium">
               Score submitted! Your rank is updating...
             </div>
           )}
 
           {sessionMutation.isError && (
-            <div className="p-4 bg-red-50 rounded-lg text-red-600">
+            <div className="p-4 bg-[#FEF2F2] rounded-none text-error">
               Failed to submit score. Please try again.
             </div>
           )}
 
           <button
             onClick={startGame}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-none hover:bg-[#1A1A1A] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Play Again

@@ -27,12 +27,12 @@ export const ConfirmDialog = ({
 
   const confirmStyles =
     variant === "danger"
-      ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
-      : "bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500";
+      ? "bg-error hover:bg-[#C41E1A]"
+      : "bg-warning hover:bg-[#B45309]";
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-xl">
+      <div className="bg-surface rounded-md p-6 max-w-sm w-full shadow-lg border border-border">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
@@ -61,14 +61,14 @@ export const ConfirmDialog = ({
           <button
             onClick={onCancel}
             disabled={loading}
-            className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50"
+            className="flex-1 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] disabled:opacity-50"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
             disabled={loading}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 text-white rounded-lg disabled:opacity-50 ${confirmStyles}`}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 text-white rounded-none disabled:opacity-50 ${confirmStyles}`}
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {confirmLabel}

@@ -121,15 +121,15 @@ export const ChatPage = () => {
   const selectedUser = selectedFriend ? getFriendUser(selectedFriend) : null;
 
   return (
-    <div className="h-[calc(100vh-12rem)] bg-white rounded-lg shadow flex">
+    <div className="h-[calc(100vh-12rem)] bg-surface rounded-md border border-border shadow-sm flex">
       {/* Conversations List */}
-      <div className="w-80 border-r border-gray-200 flex flex-col">
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+      <div className="w-80 border-r border-border flex flex-col">
+        <div className="p-4 border-b border-border">
+          <h2 className="text-lg font-semibold text-on-surface flex items-center gap-2">
             <MessageSquare className="w-5 h-5" />
             Messages
             {totalUnreadCount > 0 && (
-              <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+              <span className="bg-error text-white text-xs px-2 py-0.5 rounded-full">
                 {totalUnreadCount}
               </span>
             )}
@@ -138,7 +138,7 @@ export const ChatPage = () => {
 
         <div className="flex-1 overflow-y-auto">
           {friends.length === 0 ? (
-            <p className="text-gray-500 text-center py-8 text-sm">
+            <p className="text-secondary text-center py-8 text-sm">
               No friends yet. Add some friends to start chatting!
             </p>
           ) : (
@@ -160,11 +160,11 @@ export const ChatPage = () => {
                 <button
                   key={friendship.id}
                   onClick={() => setSelectedUserId(friend.id)}
-                  className={`w-full p-3 border-b border-gray-200 hover:bg-gray-50 text-left flex items-center gap-3 ${
-                    selectedUserId === friend.id ? "bg-blue-50" : ""
+                  className={`w-full p-3 border-b border-border hover:bg-[#F5F5F5] text-left flex items-center gap-3 ${
+                    selectedUserId === friend.id ? "bg-[#F5F5F5]" : ""
                   }`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                  <div className="w-10 h-10 rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden">
                     {friend.avatarUrl ? (
                       <img
                         src={friend.avatarUrl}
@@ -172,7 +172,7 @@ export const ChatPage = () => {
                         className="w-10 h-10 object-cover"
                       />
                     ) : (
-                      <span className="text-sm text-gray-700">
+                      <span className="text-sm text-on-surface">
                         {initials(friend.username)}
                       </span>
                     )}
@@ -180,18 +180,18 @@ export const ChatPage = () => {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="font-medium text-gray-900 truncate">
+                      <p className="font-medium text-on-surface truncate">
                         {friend.username || "Unknown User"}
                       </p>
                       {lastTime && (
-                        <p className="text-xs text-gray-400">{lastTime}</p>
+                        <p className="text-xs text-secondary">{lastTime}</p>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 truncate">{snippet}</p>
+                    <p className="text-sm text-secondary truncate">{snippet}</p>
                   </div>
 
                   {unread && (
-                    <span className="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                    <span className="ml-2 bg-error text-white text-xs px-2 py-0.5 rounded-full">
                       New
                     </span>
                   )}
@@ -205,16 +205,16 @@ export const ChatPage = () => {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
         {!selectedUserId ? (
-          <div className="flex-1 flex items-center justify-center text-gray-500">
+          <div className="flex-1 flex items-center justify-center text-secondary">
             <div className="text-center">
-              <MessageSquare className="w-16 h-16 mx-auto text-gray-300 mb-4" />
+              <MessageSquare className="w-16 h-16 mx-auto text-secondary mb-4" />
               <p>Select a friend to start chatting</p>
             </div>
           </div>
         ) : (
           <>
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="font-semibold text-gray-900">
+            <div className="p-4 border-b border-border">
+              <h3 className="font-semibold text-on-surface">
                 Chat with {selectedUser?.username || "User"}
               </h3>
             </div>
@@ -224,9 +224,9 @@ export const ChatPage = () => {
               className="flex-1 overflow-y-auto p-4 space-y-4"
             >
               {conversationLoading ? (
-                <p className="text-gray-500 text-center">Loading messages...</p>
+                <p className="text-secondary text-center">Loading messages...</p>
               ) : messages.length === 0 ? (
-                <p className="text-gray-500 text-center">No messages yet</p>
+                <p className="text-secondary text-center">No messages yet</p>
               ) : (
                 messages.map((message, idx) => {
                   const isOwn = message.fromUserId === authUserId;
@@ -250,7 +250,7 @@ export const ChatPage = () => {
                     >
                       {/* Avatar for other user */}
                       {!isOwn && showAvatar && (
-                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-700 overflow-hidden">
+                        <div className="w-8 h-8 rounded-full bg-[#E5E7EB] flex items-center justify-center text-sm text-on-surface overflow-hidden">
                           {selectedUser?.avatarUrl ? (
                             <img
                               src={selectedUser.avatarUrl}
@@ -264,10 +264,10 @@ export const ChatPage = () => {
                       )}
 
                       <div
-                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-none ${
                           isOwn
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-900"
+                            ? "bg-primary text-white"
+                            : "bg-[#F5F5F5] text-on-surface"
                         }`}
                       >
                         <p className="whitespace-pre-wrap">{message.content}</p>
@@ -278,7 +278,7 @@ export const ChatPage = () => {
 
                       {/* Avatar placeholder for own messages if desired */}
                       {isOwn && showAvatar && (
-                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-700 overflow-hidden">
+                        <div className="w-6 h-6 rounded-full bg-[#E5E7EB] flex items-center justify-center text-xs text-on-surface overflow-hidden">
                           {authUser?.avatarUrl ? (
                             <img
                               src={authUser.avatarUrl}
@@ -298,14 +298,14 @@ export const ChatPage = () => {
 
             <form
               onSubmit={handleSendMessage}
-              className="p-4 border-t border-gray-200"
+              className="p-4 border-t border-border"
             >
               <div className="flex gap-2 items-end">
                 <textarea
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Type a message..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-12 max-h-40"
+                  className="flex-1 px-4 py-2 border border-border rounded-none focus:outline-none focus:border-primary resize-none h-12 max-h-40"
                   disabled={sendMessageMutation.isPending}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
@@ -319,7 +319,7 @@ export const ChatPage = () => {
                   disabled={
                     sendMessageMutation.isPending || !messageText.trim()
                   }
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50"
+                  className="px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] flex items-center gap-2 disabled:opacity-50"
                 >
                   <Send className="w-4 h-4" />
                   Send

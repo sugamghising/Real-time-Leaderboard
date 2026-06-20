@@ -25,14 +25,14 @@ export const Button = ({
   type = "button",
 }: ButtonProps) => {
   const baseStyles =
-    "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center rounded-none font-body transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantStyles = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
-    secondary: "bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500",
-    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+    primary: "bg-primary text-white hover:bg-[#1A1A1A]",
+    secondary: "bg-white text-primary border-2 border-primary hover:bg-[#F5F5F5]",
+    danger: "bg-error text-white hover:bg-[#C41E1A]",
     outline:
-      "border-2 border-gray-300 text-gray-700 hover:bg-gray-100 focus:ring-gray-500",
+      "border-2 border-border text-on-surface hover:bg-[#F5F5F5]",
   };
 
   const sizeStyles = {

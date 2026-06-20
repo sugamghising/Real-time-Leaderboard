@@ -28,8 +28,8 @@ export const GamesPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading games...</p>
+          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-secondary">Loading games...</p>
         </div>
       </div>
     );
@@ -39,7 +39,7 @@ export const GamesPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="bg-red-50 text-red-600 px-6 py-4 rounded-lg">
+          <div className="bg-[#FEF2F2] text-error px-6 py-4 rounded-md">
             <p className="font-medium">Failed to load games</p>
             <p className="text-sm mt-1">{(error as Error).message}</p>
           </div>
@@ -51,23 +51,23 @@ export const GamesPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-          <Gamepad2 className="w-8 h-8 text-blue-600" />
+        <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
+          <Gamepad2 className="w-8 h-8 text-primary" />
           Games
         </h1>
-        <p className="text-gray-600">
+          <p className="text-secondary">
           {games?.length || 0} {games?.length === 1 ? "game" : "games"}{" "}
           available
         </p>
       </div>
 
       {!games || games.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <Gamepad2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        <div className="bg-surface rounded-md border border-border p-12 text-center">
+          <Gamepad2 className="w-16 h-16 text-secondary mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-on-surface mb-2">
             No games available yet
           </h3>
-          <p className="text-gray-600">
+        <p className="text-secondary">
             Check back later or contact an admin to add games.
           </p>
         </div>
@@ -77,10 +77,10 @@ export const GamesPage = () => {
             <div
               key={game.id}
               onClick={() => navigate(`/games/${game.id}`)}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer overflow-hidden group"
+              className="bg-surface rounded-md border border-border hover:shadow-md transition-shadow cursor-pointer overflow-hidden group"
             >
               {/* Game Image */}
-              <div className="aspect-video bg-linear-to-br from-blue-500 to-purple-600 relative overflow-hidden">
+              <div className="aspect-video bg-tertiary relative overflow-hidden">
                 {game.imageUrl ? (
                   <img
                     src={game.imageUrl}
@@ -96,19 +96,19 @@ export const GamesPage = () => {
 
               {/* Game Info */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-on-surface mb-2 group-hover:text-accent transition-colors">
                   {game.title}
                 </h3>
 
                 {game.description && (
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-secondary text-sm mb-4 line-clamp-2">
                     {game.description}
                   </p>
                 )}
 
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Slug: {game.slug}</span>
-                  <button className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium">
+                  <span className="text-secondary">Slug: {game.slug}</span>
+                  <button className="flex items-center gap-1 text-accent hover:text-accent font-medium">
                     <TrendingUp className="w-4 h-4" />
                     View Leaderboard
                   </button>

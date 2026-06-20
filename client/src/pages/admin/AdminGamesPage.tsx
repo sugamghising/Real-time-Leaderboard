@@ -92,60 +92,60 @@ export const AdminGamesPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Gamepad2 className="w-8 h-8 text-purple-600" />
-          <h1 className="text-3xl font-bold text-gray-900">Manage Games</h1>
+          <Gamepad2 className="w-8 h-8 text-tertiary" />
+          <h1 className="text-3xl font-bold text-on-surface">Manage Games</h1>
         </div>
         <button
           onClick={() => {
             setShowAddModal(true);
             setError(null);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A]"
         >
           <Plus className="w-4 h-4" />
           Add Game
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-surface rounded-md border border-border shadow-sm">
         <div className="p-6">
           {isLoading ? (
-            <p className="text-gray-500 text-center py-8">Loading games...</p>
+            <p className="text-secondary text-center py-8">Loading games...</p>
           ) : games.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No games yet. Add your first game!</p>
+            <p className="text-secondary text-center py-8">No games yet. Add your first game!</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {games.map((game: Game) => (
                 <div
                   key={game.id}
-                  className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                  className="border border-border rounded-md overflow-hidden hover:shadow-md transition-shadow flex flex-col"
                 >
                   {game.imageUrl ? (
                     <img src={game.imageUrl} alt={game.title} className="w-full h-40 object-cover" />
                   ) : (
-                    <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
+                    <div className="w-full h-40 bg-[#F5F5F5] flex items-center justify-center">
                       <ImageOff className="w-8 h-8 text-gray-300" />
                     </div>
                   )}
                   <div className="p-4 flex-1 flex flex-col">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-semibold text-gray-900">{game.title}</h3>
+                      <h3 className="font-semibold text-on-surface">{game.title}</h3>
                       <span
                         className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                           PLAYABLE_SLUGS.has(game.slug)
                             ? "bg-green-100 text-green-700"
-                            : "bg-gray-100 text-gray-600"
+                            : "bg-[#F5F5F5] text-secondary"
                         }`}
                       >
                         {PLAYABLE_SLUGS.has(game.slug) ? "Playable" : "Manual"}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mb-1 font-mono">/{game.slug}</p>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-1">
+                    <p className="text-xs text-secondary mb-1 font-mono">/{game.slug}</p>
+                    <p className="text-sm text-secondary mb-3 line-clamp-2 flex-1">
                       {game.description || "No description"}
                     </p>
                     {game.createdBy && (
-                      <p className="text-xs text-gray-400 mb-3">
+                      <p className="text-xs text-secondary mb-3">
                         By {game.createdBy.username} &middot;{" "}
                         {new Date(game.createdAt).toLocaleDateString()}
                       </p>
@@ -153,14 +153,14 @@ export const AdminGamesPage = () => {
                     <div className="flex gap-2 mt-auto">
                       <button
                         onClick={() => openEditModal(game)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] text-sm"
                       >
                         <Edit className="w-4 h-4" />
                         Edit
                       </button>
                       <button
                         onClick={() => setDeletingId(game.id)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-error text-white rounded-none hover:bg-[#C41E1A] text-sm"
                       >
                         <Trash2 className="w-4 h-4" />
                         Delete
@@ -278,60 +278,60 @@ const GameFormModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-surface rounded-md border border-border shadow-sm p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-          <button onClick={onCancel} disabled={isPending} className="text-gray-400 hover:text-gray-600">
+          <h2 className="text-xl font-bold text-on-surface">{title}</h2>
+          <button onClick={onCancel} disabled={isPending} className="text-secondary hover:text-on-surface">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <div className="mb-4 p-3 bg-[#FEF2F2] border border-border rounded-none text-sm text-error">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-on-surface mb-1">Title</label>
             <input
               type="text"
               value={formTitle}
               onChange={(e) => setFormTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
               placeholder="e.g., Click Speed Test"
             />
-            {fieldErrors.title && <p className="mt-1 text-sm text-red-600">{fieldErrors.title}</p>}
+            {fieldErrors.title && <p className="mt-1 text-sm text-error">{fieldErrors.title}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+            <label className="block text-sm font-medium text-on-surface mb-1">Slug</label>
             <input
               type="text"
               value={formSlug}
               onChange={(e) => setFormSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
               placeholder="e.g., click-speed"
             />
-            {fieldErrors.slug && <p className="mt-1 text-sm text-red-600">{fieldErrors.slug}</p>}
+            {fieldErrors.slug && <p className="mt-1 text-sm text-error">{fieldErrors.slug}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-on-surface mb-1">Description</label>
             <textarea
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
               placeholder="Game description..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+            <label className="block text-sm font-medium text-on-surface mb-1">Image</label>
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 cursor-pointer text-sm">
+              <label className="flex items-center gap-2 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] cursor-pointer text-sm">
                 <Upload className="w-4 h-4" />
                 {imageFile ? "Change Image" : "Upload Image"}
                 <input
@@ -348,7 +348,7 @@ const GameFormModal = ({
                 <button
                   type="button"
                   onClick={() => onImageSelect(null)}
-                  className="text-sm text-red-600 hover:text-red-700"
+                  className="text-sm text-error hover:text-error"
                 >
                   Remove
                 </button>
@@ -359,7 +359,7 @@ const GameFormModal = ({
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full h-32 object-cover rounded-lg border border-gray-200"
+                  className="w-full h-32 object-cover rounded-md border border-border"
                 />
               </div>
             )}
@@ -370,14 +370,14 @@ const GameFormModal = ({
               type="button"
               onClick={onCancel}
               disabled={isPending}
-              className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] disabled:opacity-50"
             >
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               {submitLabel}

@@ -26,8 +26,8 @@ export const Card = ({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-md ${paddingStyles[padding]} ${
-        onClick ? "cursor-pointer hover:shadow-lg transition-shadow" : ""
+      className={`bg-surface rounded-md border border-border shadow-sm ${paddingStyles[padding]} ${
+        onClick ? "cursor-pointer hover:shadow-md transition-shadow" : ""
       } ${className}`}
       onClick={onClick}
     >

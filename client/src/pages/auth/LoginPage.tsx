@@ -1,15 +1,11 @@
-/**
- * Login Page
- * User authentication page
- */
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { Eye, EyeOff, AlertCircle, Loader2 } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { setAccessToken, setRefreshToken } from "../../utils/storage";
 import { login } from "../../api/endpoints/auth";
-import { Input, Button, Card } from "../../components/common";
+import { Input, Button } from "../../components/common";
 import { isValidEmail } from "../../utils/helpers";
 
 export const LoginPage = () => {
@@ -18,11 +14,11 @@ export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: (data: { email: string; password: string }) => login(data),
     onSuccess: (response) => {
-      // Map AuthResponse user fields to User type
       const userData = {
         id: response.user.userId,
         username: response.user.name,
@@ -34,7 +30,6 @@ export const LoginPage = () => {
         updatedAt: new Date(),
       };
       setTokens(response.accessToken, response.refreshToken);
-      // Persist tokens to localStorage so axios and socket auth read them
       setAccessToken(response.accessToken);
       setRefreshToken(response.refreshToken);
       setUser(userData);
@@ -52,7 +47,6 @@ export const LoginPage = () => {
     e.preventDefault();
     setError("");
 
-    // Validation
     if (!isValidEmail(email)) {
       setError("Please enter a valid email address");
       return;
@@ -67,12 +61,31 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Card className="w-full max-w-md" title="Login">
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-4">
+      <div className="w-full max-w-[440px] flex flex-col items-center bg-surface border border-border shadow-sm p-10">
+        {/* Brand monogram */}
+        <div className="w-14 h-14 bg-primary rounded-none flex items-center justify-center mb-6">
+          <span className="text-white text-2xl font-headline font-light tracking-tight">R</span>
+        </div>
+
+        {/* Heading */}
+        <h1 className="text-3xl font-headline font-light text-on-surface text-center">
+          Welcome back
+        </h1>
+        <p className="text-secondary text-sm mt-1.5 text-center">
+          Sign in to continue to LeaderBoard
+        </p>
+
+        {/* Decorative accent */}
+        <hr className="w-12 border-primary/20 mt-8 mb-8" />
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="w-full space-y-5">
+          {/* Error banner */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
+            <div className="flex items-start gap-3 bg-[#FEF2F2] border border-error/30 px-4 py-3">
+              <AlertCircle className="w-4 h-4 text-error mt-0.5 shrink-0" />
+              <p className="text-sm text-error">{error}</p>
             </div>
           )}
 
@@ -81,35 +94,70 @@ export const LoginPage = () => {
             type="email"
             value={email}
             onChange={setEmail}
-            placeholder="your@email.com"
+            placeholder="you@email.com"
             required
           />
 
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={setPassword}
-            placeholder="Enter your password"
-            required
-          />
+          <div className="space-y-1">
+            <label className="block text-sm font-body text-on-surface">
+              Password
+              <span className="text-error ml-1">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                className="w-full bg-surface text-on-surface border border-border rounded-none px-4 py-3 pr-12 text-sm font-body placeholder:text-secondary/50 focus:outline-none focus:border-primary transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-on-surface transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+          </div>
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full h-12 text-base"
             loading={loginMutation.isPending}
           >
-            Login
+            {loginMutation.isPending ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Signing in...
+              </span>
+            ) : (
+              "Sign in"
+            )}
           </Button>
 
-          <p className="text-center text-sm text-gray-600">
+          {/* Divider */}
+          <div className="flex items-center gap-3 py-1">
+            <hr className="flex-1 border-border" />
+            <span className="text-xs text-secondary">or continue with</span>
+            <hr className="flex-1 border-border" />
+          </div>
+
+          {/* Register link */}
+          <p className="text-center text-sm text-secondary">
             Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:underline">
-              Register here
+            <a href="/register" className="text-accent hover:text-tertiary transition-colors">
+              Register
             </a>
           </p>
         </form>
-      </Card>
+      </div>
     </div>
   );
 };

@@ -115,11 +115,11 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
   const showMs = Math.max(1000, digits * 1000);
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-surface rounded-md border border-border shadow-sm p-6">
       {phase === "idle" && (
         <div className="text-center space-y-6 py-8">
           <div className="flex justify-center">
-            <Brain className="w-16 h-16 text-purple-500" />
+            <Brain className="w-16 h-16 text-accent" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Number Memory Test</h2>
           <p className="text-gray-600 max-w-md mx-auto">
@@ -128,17 +128,17 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
           </p>
           <div className="flex justify-center gap-8 text-sm text-gray-500">
             <div>
-              <span className="block text-2xl font-bold text-purple-600">{STARTING_DIGITS}</span>
+              <span className="block text-2xl font-bold text-tertiary">{STARTING_DIGITS}</span>
               Starting Digits
             </div>
             <div>
-              <span className="block text-2xl font-bold text-green-600">Digits</span>
+              <span className="block text-2xl font-bold text-success">Digits</span>
               Score
             </div>
           </div>
           <button
             onClick={startGame}
-            className="px-8 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+            className="px-8 py-3 bg-tertiary text-white text-lg font-semibold rounded-none hover:bg-[#36006B] transition-colors"
           >
             Start Game
           </button>
@@ -151,12 +151,12 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
             <Eye className="w-4 h-4" />
             Memorize this number
           </div>
-          <div className="text-5xl font-mono font-bold tracking-widest text-purple-600 select-none">
+          <div className="text-5xl font-mono font-bold tracking-widest text-tertiary select-none">
             {maskedTarget}
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 max-w-xs mx-auto">
+          <div className="w-full bg-border rounded-full h-2 max-w-xs mx-auto">
             <div
-              className="bg-purple-500 h-2 rounded-full transition-all duration-200"
+              className="bg-accent h-2 rounded-full transition-all duration-200"
               style={{ width: "100%" }}
             />
           </div>
@@ -179,7 +179,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
               onChange={(e) => setUserInput(e.target.value.replace(/[^0-9]/g, ""))}
               onKeyDown={handleKeyDown}
               autoFocus
-              className="w-full text-center text-3xl font-mono tracking-widest px-4 py-3 border-2 border-purple-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              className="w-full text-center text-3xl font-mono tracking-widest px-4 py-3 border-2 border-tertiary/30 rounded-none focus:outline-none focus:border-tertiary"
               placeholder={"_".repeat(digits)}
             />
           </div>
@@ -187,7 +187,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
           <button
             onClick={handleSubmit}
             disabled={userInput.length === 0}
-            className="px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors"
+            className="px-8 py-3 bg-tertiary text-white font-semibold rounded-none hover:bg-[#36006B] disabled:opacity-50 transition-colors"
           >
             Submit
           </button>
@@ -198,19 +198,19 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Game Over</h2>
           <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
-            <div className="bg-purple-50 rounded-lg p-4">
-              <span className="block text-4xl font-bold text-purple-600">{highScore || STARTING_DIGITS}</span>
+            <div className="bg-[#F5F0FF] rounded-none p-4">
+              <span className="block text-4xl font-bold text-tertiary">{highScore || STARTING_DIGITS}</span>
               <span className="text-sm text-gray-500">Best Digits</span>
             </div>
-            <div className="bg-green-50 rounded-lg p-4">
-              <span className="block text-4xl font-bold text-green-600">{roundsWon}</span>
+            <div className="bg-[#F0FDF4] rounded-none p-4">
+              <span className="block text-4xl font-bold text-success">{roundsWon}</span>
               <span className="text-sm text-gray-500">Rounds Won</span>
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-lg max-w-sm mx-auto">
+          <div className="p-4 bg-[#F5F5F5] rounded-none max-w-sm mx-auto">
             <p className="text-sm text-gray-500 mb-1">You missed:</p>
-            <p className="text-lg font-mono font-bold text-red-500 tracking-widest">{target}</p>
+            <p className="text-lg font-mono font-bold text-error tracking-widest">{target}</p>
             <p className="text-sm text-gray-400 mt-1">Your answer: {userInput}</p>
           </div>
 
@@ -222,20 +222,20 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
           )}
 
           {sessionMutation.isSuccess && (
-            <div className="p-4 bg-green-50 rounded-lg text-green-700 font-medium">
+            <div className="p-4 bg-[#F0FDF4] rounded-none text-green-700 font-medium">
               Score submitted! Your rank is updating...
             </div>
           )}
 
           {sessionMutation.isError && (
-            <div className="p-4 bg-red-50 rounded-lg text-red-600">
+            <div className="p-4 bg-[#FEF2F2] rounded-none text-error">
               Failed to submit score. Please try again.
             </div>
           )}
 
           <button
             onClick={startGame}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-tertiary text-white font-semibold rounded-none hover:bg-[#36006B] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Play Again
@@ -245,7 +245,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
 
       {phase !== "idle" && phase !== "ended" && highScore > 0 && (
         <div className="text-center text-sm text-gray-400 mt-2">
-          Best so far: <strong className="text-purple-600">{highScore}</strong> digits
+          Best so far: <strong className="text-tertiary">{highScore}</strong> digits
         </div>
       )}
     </div>
