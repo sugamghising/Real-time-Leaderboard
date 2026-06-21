@@ -59,7 +59,7 @@ export const ManageUsersPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-bold text-on-surface">Manage Users</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-on-surface">Manage Users</h1>
       </div>
 
       <div className="bg-surface rounded-md border border-border shadow-sm">

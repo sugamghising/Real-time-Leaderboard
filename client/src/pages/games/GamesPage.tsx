@@ -51,8 +51,8 @@ export const GamesPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
-          <Gamepad2 className="w-8 h-8 text-primary" />
+        <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+          <Gamepad2 className="w-6 h-6 md:w-8 md:h-8 text-primary" />
           Games
         </h1>
           <p className="text-secondary">
@@ -62,9 +62,9 @@ export const GamesPage = () => {
       </div>
 
       {!games || games.length === 0 ? (
-        <div className="bg-surface rounded-md border border-border p-12 text-center">
+        <div className="bg-surface rounded-md border border-border p-8 md:p-12 text-center">
           <Gamepad2 className="w-16 h-16 text-secondary mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-on-surface mb-2">
+          <h3 className="text-lg md:text-xl font-semibold text-on-surface mb-2">
             No games available yet
           </h3>
         <p className="text-secondary">
@@ -95,7 +95,7 @@ export const GamesPage = () => {
               </div>
 
               {/* Game Info */}
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <h3 className="text-xl font-bold text-on-surface mb-2 group-hover:text-accent transition-colors">
                   {game.title}
                 </h3>

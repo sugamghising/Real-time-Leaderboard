@@ -32,12 +32,12 @@ export const GameHistoryPage = () => {
         Back to {gameData?.title || "Game"}
       </Link>
 
-      <h1 className="text-2xl font-bold text-on-surface">Match History</h1>
+      <h1 className="text-xl md:text-2xl font-bold text-on-surface">Match History</h1>
 
       {isLoading ? (
         <p className="text-center py-8 text-secondary">Loading...</p>
       ) : !data?.sessions || data.sessions.length === 0 ? (
-        <div className="bg-surface rounded-md border border-border p-8 text-center text-secondary">
+        <div className="bg-surface rounded-md border border-border p-6 md:p-8 text-center text-secondary">
           <Clock className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No matches played yet</p>
         </div>

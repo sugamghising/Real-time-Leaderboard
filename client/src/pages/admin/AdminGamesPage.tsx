@@ -92,8 +92,8 @@ export const AdminGamesPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Gamepad2 className="w-8 h-8 text-tertiary" />
-          <h1 className="text-3xl font-bold text-on-surface">Manage Games</h1>
+          <Gamepad2 className="w-6 h-6 md:w-8 md:h-8 text-tertiary" />
+          <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Manage Games</h1>
         </div>
         <button
           onClick={() => {
@@ -108,7 +108,7 @@ export const AdminGamesPage = () => {
       </div>
 
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {isLoading ? (
             <p className="text-secondary text-center py-8">Loading games...</p>
           ) : games.length === 0 ? (
@@ -278,9 +278,9 @@ const GameFormModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-surface rounded-md border border-border shadow-sm p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-on-surface">{title}</h2>
+          <h2 className="text-lg md:text-xl font-bold text-on-surface">{title}</h2>
           <button onClick={onCancel} disabled={isPending} className="text-secondary hover:text-on-surface">
             <X className="w-5 h-5" />
           </button>

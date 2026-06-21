@@ -67,12 +67,12 @@ export const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-on-surface">Dashboard</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Dashboard</h1>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-surface rounded-md border border-border shadow-sm p-6">
+          <div key={stat.name} className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-secondary">{stat.name}</p>
@@ -88,8 +88,8 @@ export const DashboardPage = () => {
 
       {/* Top Players Preview */}
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6 border-b border-border flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-on-surface">Top Players</h2>
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface">Top Players</h2>
           <Link
             to="/leaderboard"
             className="text-accent hover:text-accent text-sm font-medium"
@@ -97,7 +97,7 @@ export const DashboardPage = () => {
             View All
           </Link>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {!leaderboard?.data || leaderboard.data.length === 0 ? (
             <p className="text-secondary text-center py-8">
               No leaderboard data yet
@@ -133,7 +133,7 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link
           to="/games"
-          className="bg-surface rounded-md border border-border shadow-sm p-6 hover:shadow-md transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
           <Gamepad2 className="w-10 h-10 text-tertiary mb-3" />
           <h3 className="text-lg font-semibold text-on-surface">Browse Games</h3>
@@ -144,7 +144,7 @@ export const DashboardPage = () => {
 
         <Link
           to="/friends"
-          className="bg-surface rounded-md border border-border shadow-sm p-6 hover:shadow-md transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
           <Users className="w-10 h-10 text-primary mb-3" />
           <h3 className="text-lg font-semibold text-on-surface">Find Friends</h3>
@@ -155,7 +155,7 @@ export const DashboardPage = () => {
 
         <Link
           to="/chat"
-          className="bg-surface rounded-md border border-border shadow-sm p-6 hover:shadow-md transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
           <MessageSquare className="w-10 h-10 text-success mb-3" />
           <h3 className="text-lg font-semibold text-on-surface">Messages</h3>

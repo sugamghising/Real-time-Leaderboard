@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff, AlertCircle, Loader2 } from "lucide-react";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { setAccessToken, setRefreshToken } from "../../utils/storage";
 import { login } from "../../api/endpoints/auth";
@@ -132,14 +132,7 @@ export const LoginPage = () => {
             className="w-full h-12 text-base"
             loading={loginMutation.isPending}
           >
-            {loginMutation.isPending ? (
-              <span className="flex items-center justify-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Signing in...
-              </span>
-            ) : (
-              "Sign in"
-            )}
+            Sign in
           </Button>
 
           {/* Divider */}

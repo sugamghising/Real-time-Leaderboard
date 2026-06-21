@@ -6,10 +6,10 @@ export const ProfilePage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-on-surface">Profile</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Profile</h1>
 
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex items-center gap-6">
             {user?.avatarUrl ? (
               <img
@@ -23,7 +23,7 @@ export const ProfilePage = () => {
               </div>
             )}
             <div>
-              <h2 className="text-2xl font-bold text-on-surface">
+              <h2 className="text-xl md:text-2xl font-bold text-on-surface">
                 {user?.username}
               </h2>
               <p className="text-secondary">{user?.email}</p>
@@ -34,7 +34,7 @@ export const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="border-t border-border p-6">
+        <div className="border-t border-border p-4 md:p-6">
           <h3 className="text-lg font-semibold text-on-surface mb-4">
             Account Information
           </h3>

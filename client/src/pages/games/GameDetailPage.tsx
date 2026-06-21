@@ -64,10 +64,10 @@ export const GameDetailPage = () => {
       </Link>
 
       <div className="bg-surface rounded-md border border-border shadow-sm overflow-hidden">
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-on-surface">{gameData.title}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-on-surface">{gameData.title}</h1>
               <p className="text-secondary mt-2">{gameData.description}</p>
             </div>
             {!GameComponent && (
@@ -102,10 +102,10 @@ export const GameDetailPage = () => {
       )}
 
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6 border-b border-border flex items-center justify-between">
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-warning" />
-            <h2 className="text-xl font-semibold text-on-surface">Top Players</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-on-surface">Top Players</h2>
           </div>
           <Link
             to={`/leaderboard/${gameId}`}
@@ -115,7 +115,7 @@ export const GameDetailPage = () => {
           </Link>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {leaderboardLoading ? (
             <p className="text-secondary text-center py-8">Loading...</p>
           ) : !leaderboard?.data || leaderboard.data.length === 0 ? (
@@ -183,10 +183,10 @@ const GameStatsSection = ({ gameId }: { gameId: string }) => {
   if (!stats?.data) return null;
 
   return (
-    <div className="bg-surface rounded-md border border-border shadow-sm p-6">
+    <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
       <div className="flex items-center gap-2 mb-4">
         <BarChart3 className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-semibold text-on-surface">Game Stats</h2>
+        <h2 className="text-lg md:text-xl font-semibold text-on-surface">Game Stats</h2>
       </div>
       <div className="grid grid-cols-3 gap-4 text-center">
         <div>

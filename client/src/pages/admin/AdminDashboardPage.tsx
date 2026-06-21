@@ -22,14 +22,14 @@ export const AdminDashboardPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Shield className="w-8 h-8 text-tertiary" />
-        <h1 className="text-3xl font-bold text-on-surface">Admin Dashboard</h1>
+        <Shield className="w-6 h-6 md:w-8 md:h-8 text-tertiary" />
+        <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Admin Dashboard</h1>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-surface rounded-md border border-border shadow-sm p-6">
+          <div key={stat.name} className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-secondary">{stat.name}</p>
@@ -47,7 +47,7 @@ export const AdminDashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Link
           to="/admin/games"
-          className="bg-surface rounded-md border border-border shadow-sm p-6 hover:shadow-md transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
           <Gamepad2 className="w-10 h-10 text-tertiary mb-3" />
           <h3 className="text-lg font-semibold text-on-surface">Manage Games</h3>
@@ -58,7 +58,7 @@ export const AdminDashboardPage = () => {
 
         <Link
           to="/admin/users"
-          className="bg-surface rounded-md border border-border shadow-sm p-6 hover:shadow-md transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
           <Users className="w-10 h-10 text-primary mb-3" />
           <h3 className="text-lg font-semibold text-on-surface">Manage Users</h3>

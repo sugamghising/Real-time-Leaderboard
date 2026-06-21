@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { Send, MessageSquare } from "lucide-react";
+import { Send, MessageSquare, ArrowLeft } from "lucide-react";
 import { useChatStore } from "../../stores/chatStore";
 import { useAuthStore } from "../../stores/authStore";
 import { getFriends } from "../../api/endpoints/friends";
@@ -121,9 +121,9 @@ export const ChatPage = () => {
   const selectedUser = selectedFriend ? getFriendUser(selectedFriend) : null;
 
   return (
-    <div className="h-[calc(100vh-12rem)] bg-surface rounded-md border border-border shadow-sm flex">
-      {/* Conversations List */}
-      <div className="w-80 border-r border-border flex flex-col">
+    <div className="h-[calc(100vh-12rem)] bg-surface rounded-md border border-border shadow-sm flex overflow-hidden">
+      {/* Conversations List - hidden on mobile when a chat is selected */}
+      <div className={`w-full md:w-80 md:border-r border-border flex flex-col ${selectedUserId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-4 border-b border-border">
           <h2 className="text-lg font-semibold text-on-surface flex items-center gap-2">
             <MessageSquare className="w-5 h-5" />
@@ -164,7 +164,7 @@ export const ChatPage = () => {
                     selectedUserId === friend.id ? "bg-[#F5F5F5]" : ""
                   }`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden">
+                  <div className="w-10 h-10 rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden shrink-0">
                     {friend.avatarUrl ? (
                       <img
                         src={friend.avatarUrl}
@@ -191,7 +191,7 @@ export const ChatPage = () => {
                   </div>
 
                   {unread && (
-                    <span className="ml-2 bg-error text-white text-xs px-2 py-0.5 rounded-full">
+                    <span className="ml-2 bg-error text-white text-xs px-2 py-0.5 rounded-full shrink-0">
                       New
                     </span>
                   )}
@@ -202,8 +202,8 @@ export const ChatPage = () => {
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
+      {/* Chat Area - hidden on mobile when no chat is selected */}
+      <div className={`flex-1 flex flex-col ${!selectedUserId ? 'hidden md:flex' : 'flex'}`}>
         {!selectedUserId ? (
           <div className="flex-1 flex items-center justify-center text-secondary">
             <div className="text-center">
@@ -213,9 +213,16 @@ export const ChatPage = () => {
           </div>
         ) : (
           <>
-            <div className="p-4 border-b border-border">
+            <div className="p-4 border-b border-border flex items-center gap-3">
+              <button
+                onClick={() => setSelectedUserId(undefined)}
+                className="md:hidden p-1 text-secondary hover:text-on-surface transition-colors"
+                aria-label="Back to conversations"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
               <h3 className="font-semibold text-on-surface">
-                Chat with {selectedUser?.username || "User"}
+                {selectedUser?.username || "User"}
               </h3>
             </div>
 
@@ -230,7 +237,6 @@ export const ChatPage = () => {
               ) : (
                 messages.map((message, idx) => {
                   const isOwn = message.fromUserId === authUserId;
-                  // show avatar when the next message is from a different sender or it's the last message
                   const next = messages[idx + 1];
                   const showAvatar =
                     !next || next.fromUserId !== message.fromUserId;
@@ -248,9 +254,8 @@ export const ChatPage = () => {
                         isOwn ? "justify-end" : "justify-start"
                       }`}
                     >
-                      {/* Avatar for other user */}
                       {!isOwn && showAvatar && (
-                        <div className="w-8 h-8 rounded-full bg-[#E5E7EB] flex items-center justify-center text-sm text-on-surface overflow-hidden">
+                        <div className="w-8 h-8 rounded-full bg-[#E5E7EB] flex items-center justify-center text-sm text-on-surface overflow-hidden shrink-0">
                           {selectedUser?.avatarUrl ? (
                             <img
                               src={selectedUser.avatarUrl}
@@ -264,21 +269,20 @@ export const ChatPage = () => {
                       )}
 
                       <div
-                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-none ${
+                        className={`max-w-[75%] lg:max-w-md px-4 py-2 rounded-none ${
                           isOwn
                             ? "bg-primary text-white"
                             : "bg-[#F5F5F5] text-on-surface"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap">{message.content}</p>
+                        <p className="whitespace-pre-wrap break-words">{message.content}</p>
                         <p className="text-xs mt-1 opacity-70 text-right">
                           {timeLabel}
                         </p>
                       </div>
 
-                      {/* Avatar placeholder for own messages if desired */}
                       {isOwn && showAvatar && (
-                        <div className="w-6 h-6 rounded-full bg-[#E5E7EB] flex items-center justify-center text-xs text-on-surface overflow-hidden">
+                        <div className="w-6 h-6 rounded-full bg-[#E5E7EB] flex items-center justify-center text-xs text-on-surface overflow-hidden shrink-0">
                           {authUser?.avatarUrl ? (
                             <img
                               src={authUser.avatarUrl}

@@ -41,8 +41,8 @@ export const GameLeaderboardPage = () => {
       </Link>
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
-          <Trophy className="w-8 h-8 text-warning" />
+        <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+          <Trophy className="w-6 h-6 md:w-8 md:h-8 text-warning" />
           {game?.data?.title || "Game"} Leaderboard
         </h1>
       </div>

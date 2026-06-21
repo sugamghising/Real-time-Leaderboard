@@ -81,8 +81,8 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="bg-surface rounded-md border border-border shadow p-8">
-      <h2 className="text-2xl font-bold text-on-surface mb-6">Create Account</h2>
+    <div className="bg-surface rounded-md border border-border shadow p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-bold text-on-surface mb-6">Create Account</h2>
 
       {error && (
         <div className="bg-[#FEF2F2] border border-error/30 text-error px-4 py-3 rounded-md mb-4">

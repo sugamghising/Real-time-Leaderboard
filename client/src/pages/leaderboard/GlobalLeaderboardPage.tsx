@@ -35,12 +35,12 @@ export const GlobalLeaderboardPage = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
-            <Trophy className="w-8 h-8 text-warning" />
+          <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+            <Trophy className="w-6 h-6 md:w-8 md:h-8 text-warning" />
             Global Leaderboard
           </h1>
         </div>
-        <div className="bg-surface rounded-md border border-border shadow-sm p-6">
+        <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
           <p className="text-error">
             Error loading leaderboard: {error.message}
           </p>
@@ -52,8 +52,8 @@ export const GlobalLeaderboardPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
-          <Trophy className="w-8 h-8 text-warning" />
+        <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+          <Trophy className="w-6 h-6 md:w-8 md:h-8 text-warning" />
           Global Leaderboard
         </h1>
       </div>

@@ -105,16 +105,16 @@ export const FriendsPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-on-surface flex items-center gap-3">
-        <Users className="w-8 h-8 text-primary" />
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+        <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
         Friends
       </h1>
 
       {/* Friend Requests */}
       {(receivedRequests.length > 0 || pendingCount > 0) && (
         <div className="bg-surface rounded-md border border-border shadow-sm">
-          <div className="p-6 border-b border-border">
-            <h2 className="text-xl font-semibold text-on-surface flex items-center gap-2">
+          <div className="p-4 md:p-6 border-b border-border">
+            <h2 className="text-lg md:text-xl font-semibold text-on-surface flex items-center gap-2">
               <UserPlus className="w-5 h-5" />
               Friend Requests
               <span className="bg-[#F5F5F5] text-primary text-sm px-2 py-0.5 rounded-full">
@@ -122,7 +122,7 @@ export const FriendsPage = () => {
               </span>
             </h2>
           </div>
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             {requestsLoading ? (
               <p className="text-secondary text-center">Loading...</p>
             ) : receivedRequests.length === 0 ? (
@@ -132,7 +132,7 @@ export const FriendsPage = () => {
                 {receivedRequests.map((request) => (
                   <div
                     key={request.id}
-                    className="flex items-center justify-between p-4 bg-[#F5F5F5] rounded-none"
+                    className="flex items-center justify-between p-4 bg-[#F5F5F5] rounded-none flex-wrap gap-2"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full overflow-hidden bg-[#F5F5F5]">
@@ -193,10 +193,10 @@ export const FriendsPage = () => {
 
       {/* Friends List */}
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6 border-b border-border">
-          <h2 className="text-xl font-semibold text-on-surface">Your Friends</h2>
+        <div className="p-4 md:p-6 border-b border-border">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface">Your Friends</h2>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {friendsLoading ? (
             <p className="text-secondary text-center">Loading...</p>
           ) : !friendsData || friendsData.length === 0 ? (
@@ -254,12 +254,12 @@ export const FriendsPage = () => {
 
       {/* Find Players / Send Requests */}
       <div className="bg-surface rounded-md border border-border shadow-sm">
-        <div className="p-6 border-b border-border flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-on-surface flex items-center gap-2">
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface flex items-center gap-2">
             <Search className="w-5 h-5" />
             Find Players
           </h2>
-          <div className="w-1/3">
+          <div className="w-full md:w-1/3">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -268,7 +268,7 @@ export const FriendsPage = () => {
             />
           </div>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {searchLoading ? (
             <p className="text-secondary">Searching...</p>
           ) : searchResults.length === 0 && query.trim() !== "" ? (
@@ -278,7 +278,7 @@ export const FriendsPage = () => {
               {searchResults.map((u: any) => (
                 <div
                   key={u.id}
-                  className="flex items-center justify-between p-3 border border-border rounded-none"
+                  className="flex items-center justify-between p-3 border border-border rounded-none flex-wrap gap-2"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-[#F5F5F5]">
