@@ -105,7 +105,7 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
       {phase === "idle" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Reaction Time Test</h2>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-gray-600 max-w-[448px] mx-auto">
             Click as soon as the screen turns <strong className="text-success">green</strong>.
             Complete <strong>{TOTAL_TRIALS} trials</strong> to get your average reaction time.
           </p>
@@ -188,7 +188,7 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
       {phase === "ended" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Results</h2>
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+          <div className="grid grid-cols-3 gap-4 max-w-[448px] mx-auto">
             <div className="bg-[#F5F5F5] rounded-none p-4">
               <span className="block text-3xl font-bold text-primary">{avg}</span>
               <span className="text-sm text-gray-500">Avg (ms)</span>

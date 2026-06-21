@@ -32,7 +32,7 @@ export const ConfirmDialog = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-surface rounded-md p-6 max-w-sm w-full shadow-lg border border-border">
+      <div className="bg-surface rounded-md p-6 max-w-[384px] w-full shadow-lg border border-border">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div

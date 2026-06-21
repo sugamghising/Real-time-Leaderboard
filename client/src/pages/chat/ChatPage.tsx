@@ -269,7 +269,7 @@ export const ChatPage = () => {
                       )}
 
                       <div
-                        className={`max-w-[75%] lg:max-w-md px-4 py-2 rounded-none ${
+                        className={`max-w-[75%] lg:max-w-[448px] px-4 py-2 rounded-none ${
                           isOwn
                             ? "bg-primary text-white"
                             : "bg-[#F5F5F5] text-on-surface"

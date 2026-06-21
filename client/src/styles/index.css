@@ -23,12 +23,6 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
-
-  --spacing-xs: 6px;
-  --spacing-sm: 16px;
-  --spacing-md: 24px;
-  --spacing-lg: 40px;
-  --spacing-xl: 116px;
 }
 
 body {

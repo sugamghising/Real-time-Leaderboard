@@ -122,7 +122,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
             <Brain className="w-16 h-16 text-accent" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Number Memory Test</h2>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-gray-600 max-w-[448px] mx-auto">
             A number will flash on screen. Memorize it, then type it back.
             Each correct round adds <strong>one more digit</strong>. How far can you go?
           </p>
@@ -154,7 +154,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
           <div className="text-5xl font-mono font-bold tracking-widest text-tertiary select-none">
             {maskedTarget}
           </div>
-          <div className="w-full bg-border rounded-full h-2 max-w-xs mx-auto">
+          <div className="w-full bg-border rounded-full h-2 max-w-[320px] mx-auto">
             <div
               className="bg-accent h-2 rounded-full transition-all duration-200"
               style={{ width: "100%" }}
@@ -169,7 +169,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
       {phase === "recall" && (
         <div className="text-center space-y-6 py-8">
           <p className="text-lg font-medium text-gray-700">Type the number you saw</p>
-          <div className="max-w-xs mx-auto">
+          <div className="max-w-[320px] mx-auto">
             <input
               ref={inputRef}
               type="text"
@@ -197,7 +197,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
       {phase === "ended" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Game Over</h2>
-          <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
+          <div className="grid grid-cols-2 gap-4 max-w-[320px] mx-auto">
             <div className="bg-[#F5F0FF] rounded-none p-4">
               <span className="block text-4xl font-bold text-tertiary">{highScore || STARTING_DIGITS}</span>
               <span className="text-sm text-gray-500">Best Digits</span>
@@ -208,7 +208,7 @@ export const NumberMemory = ({ gameId, onComplete }: NumberMemoryProps) => {
             </div>
           </div>
 
-          <div className="p-4 bg-[#F5F5F5] rounded-none max-w-sm mx-auto">
+          <div className="p-4 bg-[#F5F5F5] rounded-none max-w-[384px] mx-auto">
             <p className="text-sm text-gray-500 mb-1">You missed:</p>
             <p className="text-lg font-mono font-bold text-error tracking-widest">{target}</p>
             <p className="text-sm text-gray-400 mt-1">Your answer: {userInput}</p>

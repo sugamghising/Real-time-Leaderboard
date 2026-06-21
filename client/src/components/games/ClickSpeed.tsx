@@ -89,7 +89,7 @@ export const ClickSpeed = ({ gameId, onComplete }: ClickSpeedProps) => {
       {phase === "idle" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Click Speed Test</h2>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-gray-600 max-w-[448px] mx-auto">
             Click as fast as you can in <strong>10 seconds</strong>.
             Test your CPS (clicks per second) and compete on the leaderboard!
           </p>

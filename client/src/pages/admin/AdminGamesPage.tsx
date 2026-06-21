@@ -278,7 +278,7 @@ const GameFormModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 max-w-[448px] w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg md:text-xl font-bold text-on-surface">{title}</h2>
           <button onClick={onCancel} disabled={isPending} className="text-secondary hover:text-on-surface">

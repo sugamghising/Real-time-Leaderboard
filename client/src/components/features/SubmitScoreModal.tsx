@@ -95,7 +95,7 @@ export const SubmitScoreModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-surface rounded-md p-6 max-w-md w-full max-h-[90vh] overflow-y-auto border border-border shadow">
+      <div className="bg-surface rounded-md p-6 max-w-[448px] w-full max-h-[90vh] overflow-y-auto border border-border shadow">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Trophy className="w-6 h-6 text-warning" />
