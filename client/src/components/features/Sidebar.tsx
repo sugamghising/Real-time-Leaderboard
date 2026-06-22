@@ -63,8 +63,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-6">
-          <h2 className="text-2xl font-bold text-on-surface">Leaderboard</h2>
+        <div className="flex items-center justify-between p-4 md:p-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary rounded-none flex items-center justify-center">
+              <span className="text-white text-xl font-headline font-light tracking-tight">R</span>
+            </div>
+            <span className="text-lg font-headline font-light text-on-surface tracking-tight">Leaderboard</span>
+          </div>
           <button
             onClick={onClose}
             className="md:hidden p-1 text-secondary hover:text-on-surface transition-colors"
