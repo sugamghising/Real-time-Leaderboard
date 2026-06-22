@@ -53,22 +53,22 @@ export const UpdateProfilePage = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Edit Profile</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Edit Profile</h1>
 
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-700">Display Name</label>
+            <label className="block text-sm text-on-surface">Display Name</label>
             <input
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="mt-1 block w-full border rounded px-3 py-2"
+              className="mt-1 block w-full border border-border rounded-none px-3 py-2"
               placeholder="Display name"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-700">
+            <label className="block text-sm text-on-surface">
               Profile Picture
             </label>
             <div className="flex items-center gap-4">
@@ -92,7 +92,7 @@ export const UpdateProfilePage = () => {
               />
 
               {/* Preview thumbnail: show selected file preview first, otherwise show current avatarUrl */}
-              <div className="w-16 h-16 rounded overflow-hidden bg-gray-100">
+              <div className="w-16 h-16 rounded overflow-hidden bg-[#F5F5F5]">
                 {previewUrl ? (
                   // local preview
                   <img
@@ -107,7 +107,7 @@ export const UpdateProfilePage = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="w-full h-full flex items-center justify-center text-secondary">
                     No image
                   </div>
                 )}
@@ -122,20 +122,20 @@ export const UpdateProfilePage = () => {
                     setAvatarFile(null);
                     setPreviewUrl(null);
                   }}
-                  className="text-sm text-red-600 px-2 py-1 rounded border"
+                  className="text-sm text-error px-2 py-1 rounded-none border border-border"
                 >
                   Remove
                 </button>
               )}
             </div>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-secondary mt-2">
               Or provide a direct image URL below (optional)
             </p>
             <input
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://..."
-              className="mt-1 block w-full border rounded px-3 py-2"
+              className="mt-1 block w-full border border-border rounded-none px-3 py-2"
             />
           </div>
 
@@ -143,13 +143,13 @@ export const UpdateProfilePage = () => {
             <button
               onClick={() => mutation.mutate()}
               disabled={mutation.isPending}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60"
+              className="px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] disabled:opacity-60"
             >
               {mutation.isPending ? "Saving..." : "Save Changes"}
             </button>
             <button
               onClick={() => navigate(-1)}
-              className="ml-3 px-4 py-2 bg-gray-100 rounded"
+              className="ml-3 px-4 py-2 bg-[#F5F5F5] rounded-none"
             >
               Cancel
             </button>

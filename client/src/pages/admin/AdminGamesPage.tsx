@@ -18,7 +18,7 @@ export const AdminGamesPage = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: gamesResponse, isLoading } = useQuery({
+  const { data: gamesResponse, isLoading, isError, error: queryError } = useQuery({
     queryKey: ["games"],
     queryFn: () => getGames(),
   });
@@ -111,6 +111,11 @@ export const AdminGamesPage = () => {
         <div className="p-4 md:p-6">
           {isLoading ? (
             <p className="text-secondary text-center py-8">Loading games...</p>
+          ) : isError ? (
+            <div className="text-center py-8">
+              <p className="text-error mb-2">Failed to load games</p>
+              <p className="text-sm text-secondary">{(queryError as any)?.message || "Check that the server is running."}</p>
+            </div>
           ) : games.length === 0 ? (
             <p className="text-secondary text-center py-8">No games yet. Add your first game!</p>
           ) : (
