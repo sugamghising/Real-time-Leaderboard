@@ -8,9 +8,6 @@ import { useToast } from "../../lib/toast";
 export const UpdateProfilePage = () => {
   const { user, setUser } = useAuthStore();
   const [displayName, setDisplayName] = useState(user?.displayName ?? "");
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(
-    user?.avatarUrl ?? ""
-  );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const toast = useToast();
@@ -28,15 +25,13 @@ export const UpdateProfilePage = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("Not authenticated");
-      // If a file is chosen, upload it first which also updates the user's avatarUrl on the server
       if (avatarFile) {
         const uploadResp = await uploadProfilePicture(avatarFile);
-        return uploadResp.data; // server returns updated user
+        return uploadResp.data;
       }
 
       const resp = await updateProfile(user.id, {
         displayName: displayName || undefined,
-        avatarUrl: avatarUrl || undefined,
       });
       return resp.data;
     },
@@ -85,24 +80,21 @@ export const UpdateProfilePage = () => {
                     }
                     const url = URL.createObjectURL(f);
                     setPreviewUrl(url);
-                    // do NOT set avatarUrl input when selecting a file
                   }
                 }}
                 className="mt-1"
               />
 
-              {/* Preview thumbnail: show selected file preview first, otherwise show current avatarUrl */}
               <div className="w-16 h-16 rounded overflow-hidden bg-[#F5F5F5]">
                 {previewUrl ? (
-                  // local preview
                   <img
                     src={previewUrl}
                     alt="preview"
                     className="w-full h-full object-cover"
                   />
-                ) : avatarUrl ? (
+                ) : user?.avatarUrl ? (
                   <img
-                    src={avatarUrl}
+                    src={user.avatarUrl}
                     alt="current avatar"
                     className="w-full h-full object-cover"
                   />
@@ -128,15 +120,6 @@ export const UpdateProfilePage = () => {
                 </button>
               )}
             </div>
-            <p className="text-sm text-secondary mt-2">
-              Or provide a direct image URL below (optional)
-            </p>
-            <input
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              placeholder="https://..."
-              className="mt-1 block w-full border border-border rounded-none px-3 py-2"
-            />
           </div>
 
           <div className="pt-4">
