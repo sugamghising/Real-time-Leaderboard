@@ -61,7 +61,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#111111] flex items-center justify-center p-4">
       <div className="w-full max-w-[440px] flex flex-col items-center bg-surface border border-border shadow-sm p-10">
         {/* Brand monogram */}
         <div className="w-14 h-14 bg-primary rounded-none flex items-center justify-center mb-6">

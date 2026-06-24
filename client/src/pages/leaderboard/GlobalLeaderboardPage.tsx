@@ -70,7 +70,7 @@ export const GlobalLeaderboardPage = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-border">
-              <thead className="bg-[#FAFAFA]">
+              <thead className="bg-[#FAFAFA] dark:bg-[#1E1E1E]">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">
                     Rank
@@ -87,7 +87,7 @@ export const GlobalLeaderboardPage = () => {
                 {data.data.map((entry: LeaderboardEntry, index: number) => (
                   <tr
                     key={entry.userId}
-                    className={index < 3 ? "bg-[#FFFBEB]" : ""}
+                    className={index < 3 ? "bg-[#FFFBEB] dark:bg-[#3A3020]" : ""}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">

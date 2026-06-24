@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 export const AuthLayout = () => {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#111111] flex items-center justify-center p-4">
       <div className="w-full max-w-[448px]">
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-primary rounded-none flex items-center justify-center mx-auto mb-4">

@@ -65,7 +65,7 @@ export const ManageUsersPage = () => {
       <div className="bg-surface rounded-md border border-border shadow-sm">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-border">
-            <thead className="bg-[#FAFAFA]">
+            <thead className="bg-[#FAFAFA] dark:bg-[#1E1E1E]">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">User</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Email</th>
@@ -84,10 +84,10 @@ export const ManageUsersPage = () => {
                 </tr>
               ) : (
                 users.map((u: User) => (
-                  <tr key={u.id} className={u.id === authUser?.id ? "bg-[#FAFAFA]" : ""}>
+                  <tr key={u.id} className={u.id === authUser?.id ? "bg-[#FAFAFA] dark:bg-[#1E1E1E]" : ""}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#E5E7EB] overflow-hidden">
+                        <div className="w-10 h-10 rounded-full bg-[#E5E7EB] dark:bg-[#333333] overflow-hidden">
                           {u.avatarUrl ? (
                             <img src={u.avatarUrl} alt="avatar" className="w-10 h-10 object-cover" />
                           ) : (
@@ -129,7 +129,7 @@ export const ManageUsersPage = () => {
                           </button>
                           <button
                             onClick={() => setEditingId(null)}
-                            className="px-3 py-1 bg-[#E5E7EB] rounded-none"
+                            className="px-3 py-1 bg-[#E5E7EB] dark:bg-[#333333] rounded-none"
                           >
                             Cancel
                           </button>

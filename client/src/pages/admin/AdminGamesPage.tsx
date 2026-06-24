@@ -128,8 +128,8 @@ export const AdminGamesPage = () => {
                   {game.imageUrl ? (
                     <img src={game.imageUrl} alt={game.title} className="w-full h-40 object-cover" />
                   ) : (
-                    <div className="w-full h-40 bg-[#F5F5F5] flex items-center justify-center">
-                      <ImageOff className="w-8 h-8 text-gray-300" />
+                    <div className="w-full h-40 bg-[#F5F5F5] dark:bg-[#2A2A2A] flex items-center justify-center">
+                      <ImageOff className="w-8 h-8 text-gray-300 dark:text-gray-600" />
                     </div>
                   )}
                   <div className="p-4 flex-1 flex flex-col">
@@ -138,8 +138,8 @@ export const AdminGamesPage = () => {
                       <span
                         className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                           PLAYABLE_SLUGS.has(game.slug)
-                            ? "bg-green-100 text-green-700"
-                            : "bg-[#F5F5F5] text-secondary"
+                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                            : "bg-[#F5F5F5] text-secondary dark:bg-[#2A2A2A]"
                         }`}
                       >
                         {PLAYABLE_SLUGS.has(game.slug) ? "Playable" : "Manual"}
@@ -292,7 +292,7 @@ const GameFormModal = ({
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-[#FEF2F2] border border-border rounded-none text-sm text-error">
+          <div className="mb-4 p-3 bg-[#FEF2F2] dark:bg-[#3A1A1A] border border-border rounded-none text-sm text-error">
             {error}
           </div>
         )}
@@ -336,7 +336,7 @@ const GameFormModal = ({
           <div>
             <label className="block text-sm font-medium text-on-surface mb-1">Image</label>
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] cursor-pointer text-sm">
+              <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#2A2A2A] text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] dark:hover:bg-[#333333] cursor-pointer text-sm">
                 <Upload className="w-4 h-4" />
                 {imageFile ? "Change Image" : "Upload Image"}
                 <input
@@ -375,7 +375,7 @@ const GameFormModal = ({
               type="button"
               onClick={onCancel}
               disabled={isPending}
-              className="flex-1 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-white dark:bg-[#2A2A2A] text-on-surface border border-border rounded-none hover:bg-[#F5F5F5] dark:hover:bg-[#333333] disabled:opacity-50"
             >
               Cancel
             </button>

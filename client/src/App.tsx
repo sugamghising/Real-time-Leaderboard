@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import SocketProvider from "./providers/SocketProvider";
+import { useEffect } from "react";
 import { useAuthStore } from "./stores/authStore";
+import { useThemeStore } from "./stores/themeStore";
 
 // Layouts
 import { AuthLayout } from "./components/layout/AuthLayout";
@@ -58,10 +60,17 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const ThemeInit = () => {
+  const init = useThemeStore((s) => s.init);
+  useEffect(() => init(), [init]);
+  return null;
+};
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ThemeInit />
         <SocketProvider>
           <Routes>
             {/* Public Routes */}

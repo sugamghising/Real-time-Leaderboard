@@ -92,7 +92,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                     "flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-colors",
                     isActive
                       ? "bg-primary text-white"
-                      : "text-secondary hover:bg-[#F5F5F5]"
+                      : "text-secondary hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A]"
                   )
                 }
               >
@@ -118,7 +118,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors mt-4",
                   isActive
                     ? "bg-tertiary text-white"
-                    : "text-secondary hover:bg-[#F5F5F5]"
+                    : "text-secondary hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A]"
                 )
               }
             >
@@ -151,7 +151,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm font-medium text-error hover:bg-[#FEF2F2] rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-sm font-medium text-error hover:bg-[#FEF2F2] dark:hover:bg-[#3A1A1A] rounded-lg transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Logout
