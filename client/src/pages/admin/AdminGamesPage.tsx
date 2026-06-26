@@ -100,7 +100,7 @@ export const AdminGamesPage = () => {
             setShowAddModal(true);
             setError(null);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A]"
+          className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC]"
         >
           <Plus className="w-4 h-4" />
           Add Game
@@ -158,7 +158,7 @@ export const AdminGamesPage = () => {
                     <div className="flex gap-2 mt-auto">
                       <button
                         onClick={() => openEditModal(game)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] text-sm"
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] text-sm"
                       >
                         <Edit className="w-4 h-4" />
                         Edit
@@ -382,7 +382,7 @@ const GameFormModal = ({
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] disabled:opacity-50"
             >
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               {submitLabel}

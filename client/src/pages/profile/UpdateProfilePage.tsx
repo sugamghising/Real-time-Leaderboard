@@ -126,7 +126,7 @@ export const UpdateProfilePage = () => {
             <button
               onClick={() => mutation.mutate()}
               disabled={mutation.isPending}
-              className="px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] disabled:opacity-60"
+              className="px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] disabled:opacity-60"
             >
               {mutation.isPending ? "Saving..." : "Save Changes"}
             </button>

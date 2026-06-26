@@ -323,7 +323,7 @@ export const ChatPage = () => {
                   disabled={
                     sendMessageMutation.isPending || !messageText.trim()
                   }
-                  className="px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] flex items-center gap-2 disabled:opacity-50"
+                  className="px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] flex items-center gap-2 disabled:opacity-50"
                 >
                   <Send className="w-4 h-4" />
                   Send

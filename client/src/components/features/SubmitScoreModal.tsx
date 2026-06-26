@@ -197,7 +197,7 @@ export const SubmitScoreModal = ({
             <button
               type="submit"
               disabled={submitMutation.isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A] disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] disabled:opacity-50"
             >
               {submitMutation.isPending && (
                 <Loader2 className="w-4 h-4 animate-spin" />

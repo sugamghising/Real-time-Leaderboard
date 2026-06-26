@@ -85,7 +85,7 @@ export const RegisterPage = () => {
       <h2 className="text-xl md:text-2xl font-bold text-on-surface mb-6">Create Account</h2>
 
       {error && (
-        <div className="bg-[#FEF2F2] border border-error/30 text-error px-4 py-3 rounded-md mb-4">
+        <div className="bg-[#FEF2F2] dark:bg-[#3A1A1A] border border-error/30 text-error px-4 py-3 rounded-md mb-4">
           {error}
         </div>
       )}
@@ -97,7 +97,8 @@ export const RegisterPage = () => {
           </label>
           <input
             type="text"
-            className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
+            placeholder="your username"
+            className="w-full bg-surface text-on-surface placeholder:text-secondary/50 px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
             {...register("username")}
           />
           {errors.username && (
@@ -113,7 +114,8 @@ export const RegisterPage = () => {
           </label>
           <input
             type="email"
-            className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
+            placeholder="you@email.com"
+            className="w-full bg-surface text-on-surface placeholder:text-secondary/50 px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
             {...register("email")}
           />
           {errors.email && (
@@ -127,7 +129,8 @@ export const RegisterPage = () => {
           </label>
           <input
             type="password"
-            className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
+            placeholder="Enter your password"
+            className="w-full bg-surface text-on-surface placeholder:text-secondary/50 px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
             {...register("password")}
           />
           {errors.password && (
@@ -143,7 +146,8 @@ export const RegisterPage = () => {
           </label>
           <input
             type="password"
-            className="w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
+            placeholder="Confirm your password"
+            className="w-full bg-surface text-on-surface placeholder:text-secondary/50 px-3 py-2 border border-border rounded-none focus:outline-none focus:border-primary"
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
@@ -155,7 +159,7 @@ export const RegisterPage = () => {
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 px-4 rounded-none hover:bg-[#1A1A1A] disabled:bg-gray-400 flex items-center justify-center"
+          className="w-full bg-accent text-white py-2 px-4 rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] disabled:bg-gray-400 flex items-center justify-center"
           disabled={registerMutation.isPending}
         >
           {registerMutation.isPending && (

@@ -84,7 +84,7 @@ export const Header = ({ onMenuToggle }: HeaderProps) => {
                     }}
                     className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                       mode === opt.value
-                        ? "bg-primary text-white"
+                        ? "bg-accent text-white"
                         : "text-on-surface hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A]"
                     }`}
                   >

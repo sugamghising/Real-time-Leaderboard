@@ -91,7 +91,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   cn(
                     "flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-colors",
                     isActive
-                      ? "bg-primary text-white"
+                      ? "bg-accent text-white"
                       : "text-secondary hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A]"
                   )
                 }

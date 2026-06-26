@@ -139,7 +139,7 @@ export const ManageUsersPage = () => {
                           {u.id !== authUser?.id && (
                             <button
                               onClick={() => startEdit(u)}
-                              className="px-3 py-1 bg-primary text-white rounded-none"
+                              className="px-3 py-1 bg-accent text-white rounded-none"
                             >
                               Edit
                             </button>

@@ -310,7 +310,7 @@ export const FriendsPage = () => {
                       <button
                         onClick={() => handleSendRequest(u.id)}
                         disabled={sendMutation.isPending}
-                        className="px-3 py-1 bg-primary text-white rounded-none flex items-center gap-2"
+                        className="px-3 py-1 bg-accent text-white rounded-none flex items-center gap-2"
                       >
                         <UserPlus className="w-4 h-4" />
                         Add Friend

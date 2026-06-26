@@ -41,7 +41,7 @@ export const Input = ({
         placeholder={placeholder}
         disabled={disabled}
         required={required}
-        className={`w-full px-3 py-2 border rounded-none focus:outline-none focus:border-primary disabled:bg-gray-100 disabled:cursor-not-allowed ${
+        className={`w-full bg-surface text-on-surface placeholder:text-secondary/50 px-3 py-2 border rounded-none focus:outline-none focus:border-primary disabled:bg-gray-100 disabled:cursor-not-allowed ${
           error ? "border-error" : "border-border"
         }`}
       />

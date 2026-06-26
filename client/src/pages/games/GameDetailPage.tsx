@@ -73,7 +73,7 @@ export const GameDetailPage = () => {
             {!GameComponent && (
               <button
                 onClick={() => setShowSubmitModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A]"
+                className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC]"
               >
                 Submit Score
               </button>

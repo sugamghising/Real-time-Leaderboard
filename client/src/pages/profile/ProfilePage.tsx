@@ -42,7 +42,7 @@ export const ProfilePage = () => {
           <div className="mb-4">
             <a
               href="/profile/edit"
-              className="inline-block px-4 py-2 bg-primary text-white rounded-none hover:bg-[#1A1A1A]"
+              className="inline-block px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC]"
             >
               Edit Profile
             </a>

@@ -28,11 +28,11 @@ export const Button = ({
     "inline-flex items-center justify-center rounded-none font-body transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantStyles = {
-    primary: "bg-primary text-white hover:bg-[#1A1A1A]",
-    secondary: "bg-white text-primary border-2 border-primary hover:bg-[#F5F5F5]",
+    primary: "bg-accent text-white hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC]",
+    secondary: "bg-white text-primary border-2 border-primary hover:bg-[#F5F5F5] dark:bg-[#2A2A2A] dark:text-white dark:hover:bg-[#333333]",
     danger: "bg-error text-white hover:bg-[#C41E1A]",
     outline:
-      "border-2 border-border text-on-surface hover:bg-[#F5F5F5]",
+      "border-2 border-border text-on-surface hover:bg-[#F5F5F5] dark:hover:bg-[#2A2A2A]",
   };
 
   const sizeStyles = {

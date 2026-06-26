@@ -121,7 +121,7 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
           </div>
           <button
             onClick={startGame}
-            className="px-8 py-3 bg-primary text-white text-lg font-semibold rounded-none hover:bg-[#1A1A1A] transition-colors"
+            className="px-8 py-3 bg-accent text-white text-lg font-semibold rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] transition-colors"
           >
             Start Game
           </button>
@@ -228,7 +228,7 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
 
           <button
             onClick={startGame}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-none hover:bg-[#1A1A1A] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white font-semibold rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Play Again
