@@ -105,37 +105,37 @@ export const FriendsPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-        <Users className="w-8 h-8 text-blue-600" />
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface flex items-center gap-3">
+        <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
         Friends
       </h1>
 
       {/* Friend Requests */}
       {(receivedRequests.length > 0 || pendingCount > 0) && (
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+        <div className="bg-surface rounded-md border border-border shadow-sm">
+          <div className="p-4 md:p-6 border-b border-border">
+            <h2 className="text-lg md:text-xl font-semibold text-on-surface flex items-center gap-2">
               <UserPlus className="w-5 h-5" />
               Friend Requests
-              <span className="bg-blue-100 text-blue-700 text-sm px-2 py-0.5 rounded-full">
+              <span className="bg-[#F5F5F5] text-primary text-sm px-2 py-0.5 rounded-full">
                 {pendingCount}
               </span>
             </h2>
           </div>
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             {requestsLoading ? (
-              <p className="text-gray-500 text-center">Loading...</p>
+              <p className="text-secondary text-center">Loading...</p>
             ) : receivedRequests.length === 0 ? (
-              <p className="text-gray-500 text-center">No pending requests</p>
+              <p className="text-secondary text-center">No pending requests</p>
             ) : (
               <div className="space-y-4">
                 {receivedRequests.map((request) => (
                   <div
                     key={request.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-4 bg-[#F5F5F5] rounded-none flex-wrap gap-2"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-[#F5F5F5]">
                         {request.requester?.avatarUrl ||
                         (request.requester as any)?.profilePicture ? (
                           <img
@@ -147,7 +147,7 @@ export const FriendsPage = () => {
                             className="w-10 h-10 object-cover"
                           />
                         ) : (
-                          <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-semibold">
                             {(
                               request.requester?.username?.charAt(0) || ""
                             ).toUpperCase()}
@@ -155,10 +155,10 @@ export const FriendsPage = () => {
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">
+                        <p className="font-medium text-on-surface">
                           {request.requester?.username}
                         </p>
-                        <p className="text-sm text-gray-500">Friend request</p>
+                        <p className="text-sm text-secondary">Friend request</p>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -167,7 +167,7 @@ export const FriendsPage = () => {
                         disabled={
                           acceptMutation.isPending || rejectMutation.isPending
                         }
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 disabled:opacity-50"
+                        className="px-4 py-2 bg-success text-white rounded-none hover:bg-[#047857] flex items-center gap-2 disabled:opacity-50"
                       >
                         <UserCheck className="w-4 h-4" />
                         Accept
@@ -177,7 +177,7 @@ export const FriendsPage = () => {
                         disabled={
                           acceptMutation.isPending || rejectMutation.isPending
                         }
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2 disabled:opacity-50"
+                        className="px-4 py-2 bg-error text-white rounded-none hover:bg-[#C41E1A] flex items-center gap-2 disabled:opacity-50"
                       >
                         <UserX className="w-4 h-4" />
                         Reject
@@ -192,15 +192,15 @@ export const FriendsPage = () => {
       )}
 
       {/* Friends List */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Your Friends</h2>
+      <div className="bg-surface rounded-md border border-border shadow-sm">
+        <div className="p-4 md:p-6 border-b border-border">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface">Your Friends</h2>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {friendsLoading ? (
-            <p className="text-gray-500 text-center">Loading...</p>
+            <p className="text-secondary text-center">Loading...</p>
           ) : !friendsData || friendsData.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-secondary text-center py-8">
               No friends yet. Start adding some!
             </p>
           ) : (
@@ -215,10 +215,10 @@ export const FriendsPage = () => {
                 return (
                   <div
                     key={friendship.id}
-                    className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                    className="p-4 border border-border rounded-none hover:shadow-sm transition-shadow"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100">
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-[#F5F5F5]">
                         {friend?.avatarUrl ||
                         (friend as any)?.profilePicture ? (
                           <img
@@ -230,7 +230,7 @@ export const FriendsPage = () => {
                             className="w-12 h-12 object-cover"
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                          <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-lg">
                             {(
                               friend?.username?.charAt(0) || ""
                             ).toUpperCase() || "?"}
@@ -238,10 +238,10 @@ export const FriendsPage = () => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-on-surface truncate">
                           {friend?.username || "Unknown"}
                         </p>
-                        <p className="text-sm text-gray-500 truncate">Friend</p>
+                        <p className="text-sm text-secondary truncate">Friend</p>
                       </div>
                     </div>
                   </div>
@@ -253,35 +253,35 @@ export const FriendsPage = () => {
       </div>
 
       {/* Find Players / Send Requests */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+      <div className="bg-surface rounded-md border border-border shadow-sm">
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface flex items-center gap-2">
             <Search className="w-5 h-5" />
             Find Players
           </h2>
-          <div className="w-1/3">
+          <div className="w-full md:w-1/3">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by username or email"
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border border-border rounded-none"
             />
           </div>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {searchLoading ? (
-            <p className="text-gray-500">Searching...</p>
+            <p className="text-secondary">Searching...</p>
           ) : searchResults.length === 0 && query.trim() !== "" ? (
-            <p className="text-gray-500">No users found</p>
+            <p className="text-secondary">No users found</p>
           ) : (
             <div className="space-y-3">
               {searchResults.map((u: any) => (
                 <div
                   key={u.id}
-                  className="flex items-center justify-between p-3 border rounded-lg"
+                  className="flex items-center justify-between p-3 border border-border rounded-none flex-wrap gap-2"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-[#F5F5F5]">
                       {u.profilePicture || (u as any).avatarUrl ? (
                         <img
                           src={u.profilePicture || (u as any).avatarUrl}
@@ -289,28 +289,28 @@ export const FriendsPage = () => {
                           className="w-10 h-10 object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-semibold">
                           {(u.username?.charAt(0) || "").toUpperCase()}
                         </div>
                       )}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{u.username}</p>
-                      <p className="text-sm text-gray-500">{u.email}</p>
+                      <p className="font-medium text-on-surface">{u.username}</p>
+                      <p className="text-sm text-secondary">{u.email}</p>
                     </div>
                   </div>
                   <div>
                     {u.friendshipStatus === "ACCEPTED" ? (
-                      <span className="text-sm text-gray-500">Friends</span>
+                      <span className="text-sm text-secondary">Friends</span>
                     ) : u.friendshipStatus === "PENDING" ? (
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-secondary">
                         Request Sent
                       </span>
                     ) : (
                       <button
                         onClick={() => handleSendRequest(u.id)}
                         disabled={sendMutation.isPending}
-                        className="px-3 py-1 bg-blue-600 text-white rounded-lg flex items-center gap-2"
+                        className="px-3 py-1 bg-accent text-white rounded-none flex items-center gap-2"
                       >
                         <UserPlus className="w-4 h-4" />
                         Add Friend

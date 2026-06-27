@@ -43,40 +43,40 @@ export const DashboardPage = () => {
       name: "Your Rank",
       value: yourRank,
       icon: Trophy,
-      color: "text-yellow-600",
+      color: "text-warning",
     },
     {
       name: "Friends",
       value: String(friendCount),
       icon: Users,
-      color: "text-blue-600",
+      color: "text-primary",
     },
     {
       name: "Games Played",
       value: "0",
       icon: Gamepad2,
-      color: "text-purple-600",
+      color: "text-tertiary",
     },
     {
       name: "Win Rate",
       value: "--%",
       icon: TrendingUp,
-      color: "text-green-600",
+      color: "text-success",
     },
   ];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-on-surface">Dashboard</h1>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-white rounded-lg shadow p-6">
+          <div key={stat.name} className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">{stat.name}</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-sm text-secondary">{stat.name}</p>
+                <p className="text-2xl font-bold text-on-surface mt-1">
                   {stat.value}
                 </p>
               </div>
@@ -87,19 +87,19 @@ export const DashboardPage = () => {
       </div>
 
       {/* Top Players Preview */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Top Players</h2>
+      <div className="bg-surface rounded-md border border-border shadow-sm">
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
+          <h2 className="text-lg md:text-xl font-semibold text-on-surface">Top Players</h2>
           <Link
             to="/leaderboard"
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            className="text-accent hover:text-accent text-sm font-medium"
           >
             View All
           </Link>
         </div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {!leaderboard?.data || leaderboard.data.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-secondary text-center py-8">
               No leaderboard data yet
             </p>
           ) : (
@@ -110,14 +110,14 @@ export const DashboardPage = () => {
                   className="flex items-center justify-between"
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-2xl font-bold text-gray-400">
+                    <span className="text-2xl font-bold text-secondary">
                       #{index + 1}
                     </span>
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-on-surface">
                         {entry.user?.username || "Unknown"}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-secondary">
                         {entry.score} points
                       </p>
                     </div>
@@ -133,33 +133,33 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link
           to="/games"
-          className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
-          <Gamepad2 className="w-10 h-10 text-purple-600 mb-3" />
-          <h3 className="text-lg font-semibold text-gray-900">Browse Games</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <Gamepad2 className="w-10 h-10 text-tertiary mb-3" />
+          <h3 className="text-lg font-semibold text-on-surface">Browse Games</h3>
+          <p className="text-sm text-secondary mt-1">
             Explore available games and submit scores
           </p>
         </Link>
 
         <Link
           to="/friends"
-          className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
-          <Users className="w-10 h-10 text-blue-600 mb-3" />
-          <h3 className="text-lg font-semibold text-gray-900">Find Friends</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <Users className="w-10 h-10 text-primary mb-3" />
+          <h3 className="text-lg font-semibold text-on-surface">Find Friends</h3>
+          <p className="text-sm text-secondary mt-1">
             Connect with other players
           </p>
         </Link>
 
         <Link
           to="/chat"
-          className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+          className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow"
         >
-          <MessageSquare className="w-10 h-10 text-green-600 mb-3" />
-          <h3 className="text-lg font-semibold text-gray-900">Messages</h3>
-          <p className="text-sm text-gray-600 mt-1">Chat with your friends</p>
+          <MessageSquare className="w-10 h-10 text-success mb-3" />
+          <h3 className="text-lg font-semibold text-on-surface">Messages</h3>
+          <p className="text-sm text-secondary mt-1">Chat with your friends</p>
         </Link>
       </div>
     </div>

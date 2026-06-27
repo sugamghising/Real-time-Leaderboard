@@ -26,18 +26,18 @@ export const GameHistoryPage = () => {
     <div className="max-w-4xl mx-auto space-y-6">
       <Link
         to={`/games/${gameId}`}
-        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700"
+        className="inline-flex items-center gap-2 text-accent hover:text-tertiary"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to {gameData?.title || "Game"}
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-900">Match History</h1>
+      <h1 className="text-xl md:text-2xl font-bold text-on-surface">Match History</h1>
 
       {isLoading ? (
-        <p className="text-center py-8 text-gray-500">Loading...</p>
+        <p className="text-center py-8 text-secondary">Loading...</p>
       ) : !data?.sessions || data.sessions.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-8 text-center text-gray-500">
+        <div className="bg-surface rounded-md border border-border p-6 md:p-8 text-center text-secondary">
           <Clock className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No matches played yet</p>
         </div>
@@ -46,20 +46,20 @@ export const GameHistoryPage = () => {
           {data.sessions.map((session: GameSession) => (
             <div
               key={session.id}
-              className="bg-white rounded-lg shadow p-4 flex items-center justify-between"
+              className="bg-surface rounded-md border border-border shadow-sm p-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-yellow-500" />
-                    <span className="font-semibold text-gray-900">
+                    <Trophy className="w-4 h-4 text-warning" />
+                    <span className="font-semibold text-on-surface">
                       Score: {session.score}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                  <div className="flex items-center gap-4 text-sm text-secondary mt-1">
                     <span>
                       Duration: {session.duration ?? "?"}s
                     </span>
@@ -77,8 +77,8 @@ export const GameHistoryPage = () => {
               <span
                 className={`text-sm font-medium px-2 py-1 rounded ${
                   session.status === "COMPLETED"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
+                    ? "bg-[#F0FDF4] text-success"
+                    : "bg-[#FEF2F2] text-error"
                 }`}
               >
                 {session.status}

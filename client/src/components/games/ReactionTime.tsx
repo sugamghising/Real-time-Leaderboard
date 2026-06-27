@@ -101,27 +101,27 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
   const leaderboardScore = computeScore(avg);
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-surface rounded-md border border-border shadow-sm p-6">
       {phase === "idle" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Reaction Time Test</h2>
-          <p className="text-gray-600 max-w-md mx-auto">
-            Click as soon as the screen turns <strong className="text-green-600">green</strong>.
+          <p className="text-gray-600 max-w-[448px] mx-auto">
+            Click as soon as the screen turns <strong className="text-success">green</strong>.
             Complete <strong>{TOTAL_TRIALS} trials</strong> to get your average reaction time.
           </p>
           <div className="flex justify-center gap-8 text-sm text-gray-500">
             <div>
-              <span className="block text-2xl font-bold text-blue-600">{TOTAL_TRIALS}</span>
+              <span className="block text-2xl font-bold text-primary">{TOTAL_TRIALS}</span>
               Trials
             </div>
             <div>
-              <span className="block text-2xl font-bold text-green-600">ms</span>
+              <span className="block text-2xl font-bold text-success">ms</span>
               Score (lower = better)
             </div>
           </div>
           <button
             onClick={startGame}
-            className="px-8 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-8 py-3 bg-accent text-white text-lg font-semibold rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] transition-colors"
           >
             Start Game
           </button>
@@ -138,11 +138,11 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
           {phase === "waiting" && (
             <div
               onClick={handleClick}
-              className="w-full h-48 bg-red-50 border-2 border-red-200 rounded-xl flex items-center justify-center cursor-pointer select-none"
+              className="w-full h-48 bg-[#FEF2F2] border-2 border-error/30 rounded-none flex items-center justify-center cursor-pointer select-none"
             >
               <div className="text-center">
-                <p className="text-2xl font-bold text-red-600 mb-2">Wait for green...</p>
-                <p className="text-sm text-red-400">Don't click yet!</p>
+                <p className="text-2xl font-bold text-error mb-2">Wait for green...</p>
+                <p className="text-sm text-error/70">Don't click yet!</p>
               </div>
             </div>
           )}
@@ -150,11 +150,11 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
           {phase === "go" && (
             <div
               onClick={handleClick}
-              className="w-full h-48 bg-green-50 border-2 border-green-200 rounded-xl flex items-center justify-center cursor-pointer select-none hover:bg-green-100 transition-colors"
+              className="w-full h-48 bg-[#F0FDF4] border-2 border-success/30 rounded-none flex items-center justify-center cursor-pointer select-none hover:bg-[#DCFCE7] transition-colors"
             >
               <div className="text-center">
-                <Zap className="w-12 h-12 mx-auto mb-2 text-green-500" />
-                <p className="text-2xl font-bold text-green-600">CLICK NOW!</p>
+                <Zap className="w-12 h-12 mx-auto mb-2 text-success" />
+                <p className="text-2xl font-bold text-success">CLICK NOW!</p>
               </div>
             </div>
           )}
@@ -162,12 +162,12 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
           {phase === "result" && (
             <div
               onClick={handleClick}
-              className="w-full h-48 bg-gray-50 border-2 border-gray-200 rounded-xl flex items-center justify-center select-none"
+              className="w-full h-48 bg-[#FAFAFA] border-2 border-border rounded-none flex items-center justify-center select-none"
             >
               <div className="text-center">
                 {lastTime !== null && (
                   <>
-                    <p className="text-4xl font-bold text-blue-600 mb-1">{lastTime}</p>
+                    <p className="text-4xl font-bold text-primary mb-1">{lastTime}</p>
                     <p className="text-sm text-gray-500">ms</p>
                   </>
                 )}
@@ -178,8 +178,8 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
 
           {trials.length > 0 && (
             <div className="flex justify-center gap-6 text-sm text-gray-500">
-              <span>Best: <strong className="text-green-600">{Math.min(...trials)}ms</strong></span>
-              <span>Average: <strong className="text-blue-600">{avg}ms</strong></span>
+              <span>Best: <strong className="text-success">{Math.min(...trials)}ms</strong></span>
+              <span>Average: <strong className="text-primary">{avg}ms</strong></span>
             </div>
           )}
         </div>
@@ -188,17 +188,17 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
       {phase === "ended" && (
         <div className="text-center space-y-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900">Results</h2>
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <span className="block text-3xl font-bold text-blue-600">{avg}</span>
+          <div className="grid grid-cols-3 gap-4 max-w-[448px] mx-auto">
+            <div className="bg-[#F5F5F5] rounded-none p-4">
+              <span className="block text-3xl font-bold text-primary">{avg}</span>
               <span className="text-sm text-gray-500">Avg (ms)</span>
             </div>
-            <div className="bg-green-50 rounded-lg p-4">
-              <span className="block text-3xl font-bold text-green-600">{best}</span>
+            <div className="bg-[#F0FDF4] rounded-none p-4">
+              <span className="block text-3xl font-bold text-success">{best}</span>
               <span className="text-sm text-gray-500">Best (ms)</span>
             </div>
-            <div className="bg-purple-50 rounded-lg p-4">
-              <span className="block text-3xl font-bold text-purple-600">{leaderboardScore}</span>
+            <div className="bg-[#F5F0FF] rounded-none p-4">
+              <span className="block text-3xl font-bold text-tertiary">{leaderboardScore}</span>
               <span className="text-sm text-gray-500">Score</span>
             </div>
           </div>
@@ -215,20 +215,20 @@ export const ReactionTime = ({ gameId, onComplete }: ReactionTimeProps) => {
           )}
 
           {sessionMutation.isSuccess && (
-            <div className="p-4 bg-green-50 rounded-lg text-green-700 font-medium">
+            <div className="p-4 bg-[#F0FDF4] rounded-none text-green-700 font-medium">
               Score submitted! Your rank is updating...
             </div>
           )}
 
           {sessionMutation.isError && (
-            <div className="p-4 bg-red-50 rounded-lg text-red-600">
+            <div className="p-4 bg-[#FEF2F2] rounded-none text-error">
               Failed to submit score. Please try again.
             </div>
           )}
 
           <button
             onClick={startGame}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white font-semibold rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Play Again

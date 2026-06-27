@@ -44,11 +44,11 @@ export const GameDetailPage = () => {
   }, [gameData?.slug]);
 
   if (gameLoading) {
-    return <div className="text-center py-12 text-gray-500">Loading...</div>;
+    return <div className="text-center py-12 text-secondary">Loading...</div>;
   }
 
   if (!gameData) {
-    return <div className="text-center py-12 text-gray-500">Game not found</div>;
+    return <div className="text-center py-12 text-secondary">Game not found</div>;
   }
 
   const GameComponent = gameComponent;
@@ -57,30 +57,30 @@ export const GameDetailPage = () => {
     <div className="max-w-6xl mx-auto space-y-6">
       <Link
         to="/games"
-        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700"
+        className="inline-flex items-center gap-2 text-accent hover:text-tertiary"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Games
       </Link>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="p-6">
+      <div className="bg-surface rounded-md border border-border shadow-sm overflow-hidden">
+        <div className="p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{gameData.title}</h1>
-              <p className="text-gray-600 mt-2">{gameData.description}</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-on-surface">{gameData.title}</h1>
+              <p className="text-secondary mt-2">{gameData.description}</p>
             </div>
             {!GameComponent && (
               <button
                 onClick={() => setShowSubmitModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC]"
               >
                 Submit Score
               </button>
             )}
           </div>
 
-          <div className="mt-4 flex items-center gap-6 text-sm text-gray-600">
+          <div className="mt-4 flex items-center gap-6 text-sm text-secondary">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               Released: {new Date(gameData.createdAt).toLocaleDateString()}
@@ -101,25 +101,25 @@ export const GameDetailPage = () => {
         />
       )}
 
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+      <div className="bg-surface rounded-md border border-border shadow-sm">
+        <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
-            <h2 className="text-xl font-semibold text-gray-900">Top Players</h2>
+            <Trophy className="w-5 h-5 text-warning" />
+            <h2 className="text-lg md:text-xl font-semibold text-on-surface">Top Players</h2>
           </div>
           <Link
             to={`/leaderboard/${gameId}`}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            className="text-accent hover:text-accent text-sm font-medium"
           >
             View Full Leaderboard
           </Link>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {leaderboardLoading ? (
-            <p className="text-gray-500 text-center py-8">Loading...</p>
+            <p className="text-secondary text-center py-8">Loading...</p>
           ) : !leaderboard?.data || leaderboard.data.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No scores yet</p>
+            <p className="text-secondary text-center py-8">No scores yet</p>
           ) : (
             <div className="space-y-4">
               {leaderboard.data.map((entry: any, index: number) => (
@@ -128,17 +128,17 @@ export const GameDetailPage = () => {
                   className="flex items-center justify-between"
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-2xl font-bold text-gray-400">
+                    <span className="text-2xl font-bold text-secondary">
                       #{index + 1}
                     </span>
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-on-surface">
                         {entry.user?.username || "Unknown"}
                       </p>
-                      <p className="text-sm text-gray-500">{entry.score} points</p>
+                      <p className="text-sm text-secondary">{entry.score} points</p>
                     </div>
                   </div>
-                  {index < 3 && <Trophy className="w-6 h-6 text-yellow-500" />}
+                  {index < 3 && <Trophy className="w-6 h-6 text-warning" />}
                 </div>
               ))}
             </div>
@@ -154,7 +154,7 @@ export const GameDetailPage = () => {
         <div className="text-center">
           <Link
             to={`/games/${gameId}/history`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm"
+            className="inline-flex items-center gap-2 text-accent hover:text-accent text-sm"
           >
             <History className="w-4 h-4" />
             View Match History
@@ -183,29 +183,29 @@ const GameStatsSection = ({ gameId }: { gameId: string }) => {
   if (!stats?.data) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-surface rounded-md border border-border shadow-sm p-4 md:p-6">
       <div className="flex items-center gap-2 mb-4">
-        <BarChart3 className="w-5 h-5 text-blue-500" />
-        <h2 className="text-xl font-semibold text-gray-900">Game Stats</h2>
+        <BarChart3 className="w-5 h-5 text-primary" />
+        <h2 className="text-lg md:text-xl font-semibold text-on-surface">Game Stats</h2>
       </div>
       <div className="grid grid-cols-3 gap-4 text-center">
         <div>
-          <span className="block text-2xl font-bold text-blue-600">
+          <span className="block text-2xl font-bold text-primary">
             {stats.data.totalPlays}
           </span>
-          <span className="text-sm text-gray-500">Total Plays</span>
+          <span className="text-sm text-secondary">Total Plays</span>
         </div>
         <div>
-          <span className="block text-2xl font-bold text-green-600">
+          <span className="block text-2xl font-bold text-success">
             {stats.data.bestScore}
           </span>
-          <span className="text-sm text-gray-500">Best Score</span>
+          <span className="text-sm text-secondary">Best Score</span>
         </div>
         <div>
-          <span className="block text-2xl font-bold text-purple-600">
+          <span className="block text-2xl font-bold text-tertiary">
             {stats.data.averageScore}
           </span>
-          <span className="text-sm text-gray-500">Average Score</span>
+          <span className="text-sm text-secondary">Average Score</span>
         </div>
       </div>
     </div>

@@ -95,10 +95,10 @@ export const SubmitScoreModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-surface rounded-md p-6 max-w-[448px] w-full max-h-[90vh] overflow-y-auto border border-border shadow">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-yellow-500" />
+            <Trophy className="w-6 h-6 text-warning" />
             <h2 className="text-xl font-bold text-gray-900">Submit Score</h2>
           </div>
           <button
@@ -109,9 +109,9 @@ export const SubmitScoreModal = ({
           </button>
         </div>
 
-        <div className="mb-4 p-4 bg-blue-50 rounded-lg">
-          <h3 className="font-medium text-blue-900">{game.title}</h3>
-          <p className="text-sm text-blue-700">{game.description}</p>
+        <div className="mb-4 p-4 bg-[#F5F0FF] rounded-none">
+          <h3 className="font-medium text-tertiary">{game.title}</h3>
+          <p className="text-sm text-accent">{game.description}</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -122,12 +122,12 @@ export const SubmitScoreModal = ({
             <input
               type="number"
               {...register("score", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-none focus:outline-none"
               placeholder="Enter your score"
               min="0"
             />
             {errors.score && (
-              <p className="mt-1 text-sm text-red-600">
+              <p className="mt-1 text-sm text-error">
                 {errors.score.message}
               </p>
             )}
@@ -141,7 +141,7 @@ export const SubmitScoreModal = ({
               <button
                 type="button"
                 onClick={addMetaField}
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="text-sm text-accent hover:text-accent"
               >
                 + Add Field
               </button>
@@ -162,19 +162,19 @@ export const SubmitScoreModal = ({
                         return newFields;
                       });
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="flex-1 px-3 py-2 border border-border rounded-none focus:outline-none text-sm"
                   />
                   <input
                     type="text"
                     placeholder="Value"
                     value={value}
                     onChange={(e) => updateMetaField(key, e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="flex-1 px-3 py-2 border border-border rounded-none focus:outline-none text-sm"
                   />
                   <button
                     type="button"
                     onClick={() => removeMetaField(key)}
-                    className="px-2 py-2 text-red-600 hover:text-red-700"
+                    className="px-2 py-2 text-error hover:text-error"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -190,14 +190,14 @@ export const SubmitScoreModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              className="flex-1 px-4 py-2 bg-white text-on-surface border border-border rounded-none hover:bg-[#F5F5F5]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitMutation.isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-accent text-white rounded-none hover:bg-[#7A16E0] dark:hover:bg-[#6B14CC] disabled:opacity-50"
             >
               {submitMutation.isPending && (
                 <Loader2 className="w-4 h-4 animate-spin" />

@@ -59,56 +59,56 @@ export const ManageUsersPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Manage Users</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-on-surface">Manage Users</h1>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-surface rounded-md border border-border shadow-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-[#FAFAFA] dark:bg-[#1E1E1E]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">User</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-secondary uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-surface divide-y divide-border">
               {isLoading ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">Loading users...</td>
+                  <td colSpan={4} className="px-6 py-4 text-sm text-secondary text-center">Loading users...</td>
                 </tr>
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">No users found</td>
+                  <td colSpan={4} className="px-6 py-4 text-sm text-secondary text-center">No users found</td>
                 </tr>
               ) : (
                 users.map((u: User) => (
-                  <tr key={u.id} className={u.id === authUser?.id ? "bg-gray-50" : ""}>
+                  <tr key={u.id} className={u.id === authUser?.id ? "bg-[#FAFAFA] dark:bg-[#1E1E1E]" : ""}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                        <div className="w-10 h-10 rounded-full bg-[#E5E7EB] dark:bg-[#333333] overflow-hidden">
                           {u.avatarUrl ? (
                             <img src={u.avatarUrl} alt="avatar" className="w-10 h-10 object-cover" />
                           ) : (
-                            <div className="flex items-center justify-center w-full h-full text-sm text-gray-700">
+                            <div className="flex items-center justify-center w-full h-full text-sm text-on-surface">
                               {(u.username || "").slice(0, 2).toUpperCase()}
                             </div>
                           )}
                         </div>
                         <div className="truncate">
-                          <div className="text-sm font-medium text-gray-900 truncate">{u.username}</div>
-                          <div className="text-xs text-gray-500 truncate">{u.displayName || ""}</div>
+                          <div className="text-sm font-medium text-on-surface truncate">{u.username}</div>
+                          <div className="text-xs text-secondary truncate">{u.displayName || ""}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{u.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary">{u.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary">
                       {editingId === u.id ? (
                         <select
                           value={role}
                           onChange={(e) => setRole(e.target.value as UserRole)}
-                          className="border rounded px-2 py-1"
+                          className="border border-border rounded-none px-2 py-1"
                         >
                           <option value="USER">USER</option>
                           <option value="ADMIN">ADMIN</option>
@@ -123,13 +123,13 @@ export const ManageUsersPage = () => {
                           <button
                             onClick={() => saveEdit(u.id)}
                             disabled={updateMutation.isPending}
-                            className="px-3 py-1 bg-green-600 text-white rounded disabled:opacity-50"
+                            className="px-3 py-1 bg-success text-white rounded-none disabled:opacity-50"
                           >
                             {updateMutation.isPending ? "Saving..." : "Save"}
                           </button>
                           <button
                             onClick={() => setEditingId(null)}
-                            className="px-3 py-1 bg-gray-200 rounded"
+                            className="px-3 py-1 bg-[#E5E7EB] dark:bg-[#333333] rounded-none"
                           >
                             Cancel
                           </button>
@@ -139,7 +139,7 @@ export const ManageUsersPage = () => {
                           {u.id !== authUser?.id && (
                             <button
                               onClick={() => startEdit(u)}
-                              className="px-3 py-1 bg-blue-600 text-white rounded"
+                              className="px-3 py-1 bg-accent text-white rounded-none"
                             >
                               Edit
                             </button>
@@ -147,7 +147,7 @@ export const ManageUsersPage = () => {
                           {u.id !== authUser?.id && (
                             <button
                               onClick={() => setDeletingId(u.id)}
-                              className="px-3 py-1 bg-red-600 text-white rounded"
+                              className="px-3 py-1 bg-error text-white rounded-none"
                             >
                               Delete
                             </button>
